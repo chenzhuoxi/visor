@@ -13,7 +13,8 @@
 {
 "value":"-1",
 "label":"Off",
-"label_it":"No"
+"label_it":"No",
+"label_zh":"关闭"
 },
 {
 "value":"0",
@@ -81,7 +82,9 @@
 "type":"text",
 "max":100,
 "what":"prompt"
-}
+},
+"label_zh":"操作按钮提示语",
+"note_zh":"当操作按钮运行自定义提示语时发送给 Meta AI 的文本。"
 },
 {
 "key":"action_button_assistant_custom_prompt_long_press",
@@ -211,118 +214,148 @@
 {
 "value":"0",
 "label":"Unknown",
-"hidden":true
+"hidden":true,
+"label_zh":"未知"
 },
 {
 "value":"1",
-"label":"Off"
+"label":"Off",
+"label_zh":"关闭"
 },
 {
 "value":"2",
-"label":"Meta AI"
+"label":"Meta AI",
+"label_zh":"Meta AI"
 },
 {
 "value":"3",
-"label":"Wellness partner 6"
+"label":"Wellness partner 6",
+"label_zh":"健康伙伴 6"
 },
 {
 "value":"4",
-"label":"Capture"
+"label":"Capture",
+"label_zh":"拍摄"
 },
 {
 "value":"5",
-"label":"Tap to call"
+"label":"Tap to call",
+"label_zh":"轻点拨打电话"
 },
 {
 "value":"6",
-"label":"Custom Meta AI prompt"
+"label":"Custom Meta AI prompt",
+"label_zh":"自定义 Meta AI 提示语"
 },
 {
 "value":"7",
-"label":"Live AI"
+"label":"Live AI",
+"label_zh":"Live AI"
 },
 {
 "value":"8",
-"label":"Music app 1"
+"label":"Music app 1",
+"label_zh":"音乐应用 1"
 },
 {
 "value":"9",
-"label":"Music app 2"
+"label":"Music app 2",
+"label_zh":"音乐应用 2"
 },
 {
 "value":"10",
-"label":"Music app 3"
+"label":"Music app 3",
+"label_zh":"音乐应用 3"
 },
 {
 "value":"11",
-"label":"Autocapture"
+"label":"Autocapture",
+"label_zh":"自动拍摄"
 },
 {
 "value":"12",
-"label":"iHeartRadio"
+"label":"iHeartRadio",
+"label_zh":"iHeartRadio"
 },
 {
 "value":"13",
-"label":"Live translation"
+"label":"Live translation",
+"label_zh":"实时翻译"
 },
 {
 "value":"14",
-"label":"Be My Eyes"
+"label":"Be My Eyes",
+"label_zh":"Be My Eyes"
 },
 {
 "value":"15",
-"label":"Heart rate"
+"label":"Heart rate",
+"label_zh":"心率"
 },
 {
 "value":"16",
-"label":"Workout duration"
+"label":"Workout duration",
+"label_zh":"运动时长"
 },
 {
 "value":"17",
-"label":"Workout distance"
+"label":"Workout distance",
+"label_zh":"运动距离"
 },
 {
 "value":"18",
-"label":"Workout pace"
+"label":"Workout pace",
+"label_zh":"运动配速"
 },
 {
 "value":"19",
-"label":"Sensing"
+"label":"Sensing",
+"label_zh":"感知"
 },
 {
 "value":"20",
-"label":"Mute or unmute"
+"label":"Mute or unmute",
+"label_zh":"静音或取消静音"
 },
 {
 "value":"21",
-"label":"Music"
+"label":"Music",
+"label_zh":"音乐"
 },
 {
 "value":"22",
-"label":"Hearing"
+"label":"Hearing",
+"label_zh":"听力"
 },
 {
 "value":"23",
-"label":"Hearing assist 2"
+"label":"Hearing assist 2",
+"label_zh":"听力辅助 2"
 },
 {
 "value":"24",
-"label":"Share to Instagram"
+"label":"Share to Instagram",
+"label_zh":"分享到 Instagram"
 },
 {
 "value":"25",
-"label":"Switch audio source"
+"label":"Switch audio source",
+"label_zh":"切换音频源"
 },
 {
 "value":"26",
-"label":"Pause or resume announcements"
+"label":"Pause or resume announcements",
+"label_zh":"暂停或继续播报"
 },
 {
 "value":"27",
-"label":"Echromic"
+"label":"Echromic",
+"label_zh":"Echromic"
 }
 ]
-}
+},
+"label_zh":"长按操作按钮",
+"note_zh":"长按操作按钮时的功能。"
 },
 {
 "key":"assignable_action_button_short_press_mapping",
@@ -338,118 +371,148 @@
 {
 "value":"0",
 "label":"Unknown",
-"hidden":true
+"hidden":true,
+"label_zh":"未知"
 },
 {
 "value":"1",
-"label":"Off"
+"label":"Off",
+"label_zh":"关闭"
 },
 {
 "value":"2",
-"label":"Meta AI"
+"label":"Meta AI",
+"label_zh":"Meta AI"
 },
 {
 "value":"3",
-"label":"Wellness partner 6"
+"label":"Wellness partner 6",
+"label_zh":"健康伙伴 6"
 },
 {
 "value":"4",
-"label":"Capture"
+"label":"Capture",
+"label_zh":"拍摄"
 },
 {
 "value":"5",
-"label":"Tap to call"
+"label":"Tap to call",
+"label_zh":"轻点拨打电话"
 },
 {
 "value":"6",
-"label":"Custom Meta AI prompt"
+"label":"Custom Meta AI prompt",
+"label_zh":"自定义 Meta AI 提示语"
 },
 {
 "value":"7",
-"label":"Live AI"
+"label":"Live AI",
+"label_zh":"Live AI"
 },
 {
 "value":"8",
-"label":"Music app 1"
+"label":"Music app 1",
+"label_zh":"音乐应用 1"
 },
 {
 "value":"9",
-"label":"Music app 2"
+"label":"Music app 2",
+"label_zh":"音乐应用 2"
 },
 {
 "value":"10",
-"label":"Music app 3"
+"label":"Music app 3",
+"label_zh":"音乐应用 3"
 },
 {
 "value":"11",
-"label":"Autocapture"
+"label":"Autocapture",
+"label_zh":"自动拍摄"
 },
 {
 "value":"12",
-"label":"iHeartRadio"
+"label":"iHeartRadio",
+"label_zh":"iHeartRadio"
 },
 {
 "value":"13",
-"label":"Live translation"
+"label":"Live translation",
+"label_zh":"实时翻译"
 },
 {
 "value":"14",
-"label":"Be My Eyes"
+"label":"Be My Eyes",
+"label_zh":"Be My Eyes"
 },
 {
 "value":"15",
-"label":"Heart rate"
+"label":"Heart rate",
+"label_zh":"心率"
 },
 {
 "value":"16",
-"label":"Workout duration"
+"label":"Workout duration",
+"label_zh":"运动时长"
 },
 {
 "value":"17",
-"label":"Workout distance"
+"label":"Workout distance",
+"label_zh":"运动距离"
 },
 {
 "value":"18",
-"label":"Workout pace"
+"label":"Workout pace",
+"label_zh":"运动配速"
 },
 {
 "value":"19",
-"label":"Sensing"
+"label":"Sensing",
+"label_zh":"感知"
 },
 {
 "value":"20",
-"label":"Mute or unmute"
+"label":"Mute or unmute",
+"label_zh":"静音或取消静音"
 },
 {
 "value":"21",
-"label":"Music"
+"label":"Music",
+"label_zh":"音乐"
 },
 {
 "value":"22",
-"label":"Hearing"
+"label":"Hearing",
+"label_zh":"听力"
 },
 {
 "value":"23",
-"label":"Hearing assist 2"
+"label":"Hearing assist 2",
+"label_zh":"听力辅助 2"
 },
 {
 "value":"24",
-"label":"Share to Instagram"
+"label":"Share to Instagram",
+"label_zh":"分享到 Instagram"
 },
 {
 "value":"25",
-"label":"Switch audio source"
+"label":"Switch audio source",
+"label_zh":"切换音频源"
 },
 {
 "value":"26",
-"label":"Pause or resume announcements"
+"label":"Pause or resume announcements",
+"label_zh":"暂停或继续播报"
 },
 {
 "value":"27",
-"label":"Echromic"
+"label":"Echromic",
+"label_zh":"Echromic"
 }
 ]
-}
+},
+"label_zh":"轻按操作按钮",
+"note_zh":"轻按一次操作按钮时的功能。"
 },
 {
 "key":"assignable_action_led_mapping",
@@ -531,7 +594,8 @@
 "options":[
 {
 "value":"0",
-"label":"None"
+"label":"None",
+"label_zh":"无"
 },
 {
 "value":"1",
@@ -820,7 +884,8 @@
 "confidence":"medium",
 "control":{
 "type":"toggle"
-}
+},
+"note_zh":"此开关仅用于存储和同步，眼镜上不会有任何功能随之改变。"
 },
 {
 "key":"assistant_enabled",
@@ -832,7 +897,9 @@
 "confidence":"high",
 "control":{
 "type":"toggle"
-}
+},
+"label_zh":"Meta AI",
+"note_zh":"开启或关闭眼镜上的 Meta AI。"
 },
 {
 "key":"assistant_follow_up_enabled",
@@ -846,7 +913,9 @@
 "type":"toggle"
 },
 "label_it":"Rispondi senza dire \"Hey Meta\"",
-"note_it":"Dopo il completamento del prompt, il microfono dei tuoi occhiali resterà attivo e in ascolto per un breve periodo per eventuali altri prompt. Puoi fare a meno di dire \"Hey Meta\"."
+"note_it":"Dopo il completamento del prompt, il microfono dei tuoi occhiali resterà attivo e in ascolto per un breve periodo per eventuali altri prompt. Puoi fare a meno di dire \"Hey Meta\".",
+"label_zh":"无需说“Hey Meta”即可响应",
+"note_zh":"在你说完提示语后的一小段时间内，眼镜的麦克风会保持开启并继续聆听下一个指令。你可以省去说“Hey Meta”。"
 },
 {
 "key":"assistant_llm_enabled",
@@ -906,7 +975,9 @@
 "confidence":"high",
 "control":{
 "type":"toggle"
-}
+},
+"label_zh":"保存语音记录",
+"note_zh":"允许 Meta 保留你对 Meta AI 说话时的录音。"
 },
 {
 "key":"assistant_store_voice_transcripts",
@@ -920,7 +991,9 @@
 "type":"toggle"
 },
 "label_it":"Memorizza trascrizioni",
-"note_it":"Memorizza una copia scritta di quello che dici e i dati correlati."
+"note_it":"Memorizza una copia scritta di quello che dici e i dati correlati.",
+"label_zh":"保存文字记录",
+"note_zh":"保存你说的话的文字副本及相关数据。"
 },
 {
 "key":"assistant_voice_id",
@@ -990,7 +1063,8 @@
 "confidence":"medium",
 "control":{
 "type":"toggle"
-}
+},
+"note_zh":"此开关仅用于存储和同步，眼镜上不会有任何功能随之改变。"
 },
 {
 "key":"assistant_wakeword",
@@ -1018,7 +1092,9 @@
 "type":"toggle"
 },
 "label_it":"Riduci le interruzioni",
-"note_it":"Aspetta che tu finisca di parlare per consegnare le notifiche."
+"note_it":"Aspetta che tu finisca di parlare per consegnare le notifiche.",
+"label_zh":"减少打扰",
+"note_zh":"等你说完话后再为你送达通知。"
 },
 {
 "key":"audio_balance",
@@ -1048,7 +1124,9 @@
 "confidence":"medium",
 "control":{
 "type":"toggle"
-}
+},
+"label_zh":"音频降噪",
+"note_zh":"由手机处理时，降低视频音频中的背景噪声。"
 },
 {
 "key":"audio_playback_during_capture_enabled",
@@ -1067,7 +1145,9 @@
 262,
 263,
 264
-]
+],
+"label_zh":"录音时收听",
+"note_zh":"拍摄视频时音频将继续播放。"
 },
 {
 "key":"auto_play_pause_on_don_doff",
@@ -1079,7 +1159,9 @@
 "confidence":"high",
 "control":{
 "type":"toggle"
-}
+},
+"label_zh":"摘下眼镜时暂停音乐",
+"note_zh":"摘下眼镜时暂停播放音乐。"
 },
 {
 "key":"autocapture_action_exp_enabled",
@@ -1359,7 +1441,9 @@
 "type":"toggle"
 },
 "label_it":"Volume adattivo",
-"note_it":"Regola automaticamente il volume degli occhiali in base al tuo ambiente."
+"note_it":"Regola automaticamente il volume degli occhiali in base al tuo ambiente.",
+"label_zh":"自适应音量",
+"note_zh":"根据所处环境自动调节眼镜音量。"
 },
 {
 "key":"battery_saver_mode_enabled",
@@ -1372,7 +1456,9 @@
 "control":{
 "type":"toggle"
 },
-"label_it":"Risparmio della batteria"
+"label_it":"Risparmio della batteria",
+"label_zh":"省电模式",
+"note_zh":"此开关仅用于存储和同步，眼镜上不会有任何功能随之改变。"
 },
 {
 "key":"bluetooth_map_status",
@@ -1399,7 +1485,9 @@
 "type":"toggle"
 },
 "label_it":"Risposte dettagliate",
-"note_it":"Sentirai altre informazioni su oggetti, segnali e persone. Non usare come ausilio per la mobilità."
+"note_it":"Sentirai altre informazioni su oggetti, segnali e persone. Non usare come ausilio per la mobilità.",
+"label_zh":"详细描述",
+"note_zh":"你会听到更多关于物体、标识和人员的描述。请勿将其用作行动辅助工具。"
 },
 {
 "key":"camera_use_enabled",
@@ -1554,7 +1642,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -1582,7 +1671,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -1764,7 +1854,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -1792,7 +1883,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -1974,7 +2066,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -2002,7 +2095,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -2184,7 +2278,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -2212,7 +2307,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -2394,7 +2490,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -2422,7 +2519,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -2604,7 +2702,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -2632,7 +2731,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -2814,7 +2914,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -2842,7 +2943,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -3024,7 +3126,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -3052,7 +3155,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -3234,7 +3338,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -3262,7 +3367,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -3444,7 +3550,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -3472,7 +3579,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -3654,7 +3762,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -3682,7 +3791,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -3864,7 +3974,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -3892,7 +4003,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -4074,7 +4186,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -4102,7 +4215,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -4284,7 +4398,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -4312,7 +4427,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -4494,7 +4610,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -4522,7 +4639,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -4704,7 +4822,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -4732,7 +4851,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -4790,7 +4910,9 @@
 262,
 263,
 264
-]
+],
+"label_zh":"触控板手势",
+"note_zh":"关闭触控板，直到合上镜腿以避免误触手势。"
 },
 {
 "key":"capture_aspect_ratio",
@@ -4807,19 +4929,24 @@
 "value":"0",
 "label":"Portrait",
 "label_it":"Verticale",
-"detail":"3:4"
+"detail":"3:4",
+"label_zh":"竖版",
+"detail_zh":"3:4"
 },
 {
 "value":"1",
 "label":"Landscape",
 "label_it":"Orizzontale",
-"detail":"4:3"
+"detail":"4:3",
+"label_zh":"横版",
+"detail_zh":"4:3"
 },
 {
 "value":"-1",
 "label":"Current orientation",
 "label_it":"Orientamento attuale",
-"hidden":true
+"hidden":true,
+"label_zh":"当前方向"
 }
 ]
 },
@@ -4827,7 +4954,9 @@
 "not_products":[
 258
 ],
-"note_it":"Foto e video in verticale (3:4) o in orizzontale (4:3). Gli occhiali scattano sempre l'intera inquadratura verticale; Visor ritaglia quelli orizzontali a 4:3 quando li importa."
+"note_it":"Foto e video in verticale (3:4) o in orizzontale (4:3). Gli occhiali scattano sempre l'intera inquadratura verticale; Visor ritaglia quelli orizzontali a 4:3 quando li importa.",
+"label_zh":"媒体方向",
+"note_zh":"竖版（3:4）或横版（4:3）照片和视频。眼镜始终拍摄完整的竖版画面；Visor 在传输时会把横版画面裁剪为 4:3。"
 },
 {
 "key":"capture_auto_review",
@@ -4844,7 +4973,9 @@
 "note_it":"Il controllo automatico fornisce una rapida panoramica del contenuto acquisito, per controllarlo e condividerlo facilmente ovunque ti trovi.",
 "products":[
 259
-]
+],
+"label_zh":"自动回看",
+"note_zh":"自动回看可让你快速浏览刚拍摄的内容，方便随时查看和分享。"
 },
 {
 "key":"capture_button_assistant_shortcut",
@@ -4917,47 +5048,59 @@
 "value":"3",
 "label":"Hyperlapse",
 "detail":"Condense long time lapses into short, shareable clips.",
-"detail_it":"Condensa lunghi time-lapse in brevi clip da condividere."
+"detail_it":"Condensa lunghi time-lapse in brevi clip da condividere.",
+"label_zh":"延时摄影",
+"detail_zh":"将长时间的延时摄影压缩成简短、可分享的片段。"
 },
 {
 "value":"6",
 "label":"Slow motion",
 "detail":"Record video in 4x slow motion.",
-"detail_it":"Registra video in slow motion 4x."
+"detail_it":"Registra video in slow motion 4x.",
+"label_zh":"慢动作",
+"detail_zh":"以 4 倍慢动作录制视频。"
 },
 {
 "value":"5",
 "label":"Autocapture",
 "label_it":"Acquisisci automaticamente",
 "detail":"Automatically capture photos of important things around you",
-"detail_it":"Acquisisci automaticamente foto dei momenti importanti intorno a te."
+"detail_it":"Acquisisci automaticamente foto dei momenti importanti intorno a te.",
+"label_zh":"自动拍摄",
+"detail_zh":"自动拍摄周围重要事物的照片"
 },
 {
 "value":"1",
 "label":"Video",
 "label_it":"Video",
-"hidden":true
+"hidden":true,
+"label_zh":"视频"
 },
 {
 "value":"2",
 "label":"Dynamic photo",
 "label_it":"Foto dinamica",
-"hidden":true
+"hidden":true,
+"label_zh":"动态照片"
 },
 {
 "value":"4",
 "label":"Panorama",
-"hidden":true
+"hidden":true,
+"label_zh":"全景"
 },
 {
 "value":"7",
 "label":"Dash cam",
-"hidden":true
+"hidden":true,
+"label_zh":"行车记录仪"
 }
 ]
 },
 "label_it":"Modalità di acquisizione alternative",
-"note_it":"Scegli che azione associare al pulsante di azione"
+"note_it":"Scegli che azione associare al pulsante di azione",
+"label_zh":"其他拍摄模式",
+"note_zh":"选择操作按钮的功能"
 },
 {
 "key":"capture_mode_selection_long_press",
@@ -5026,7 +5169,9 @@
 "type":"toggle"
 },
 "label_it":"Contenuti multimediali nel cloud",
-"note_it":"Consenti l'invio delle tue foto e dei tuoi video al cloud di Meta per l'elaborazione e la memorizzazione temporanea."
+"note_it":"Consenti l'invio delle tue foto e dei tuoi video al cloud di Meta per l'elaborazione e la memorizzazione temporanea.",
+"label_zh":"云端媒体",
+"note_zh":"允许将你的照片和视频发送至 Meta 云端进行处理和临时存储。"
 },
 {
 "key":"cloud_ota_enabled",
@@ -5076,7 +5221,8 @@
 "confidence":"medium",
 "control":{
 "type":"toggle"
-}
+},
+"note_zh":"此开关仅用于存储和同步，眼镜上不会有任何功能随之改变。"
 },
 {
 "key":"comms_phone_number",
@@ -5157,7 +5303,8 @@
 "options":[
 {
 "value":"off",
-"label":"Off"
+"label":"Off",
+"label_zh":"关闭"
 },
 {
 "value":"gave_up",
@@ -5165,7 +5312,8 @@
 },
 {
 "value":"none",
-"label":"None"
+"label":"None",
+"label_zh":"无"
 },
 {
 "value":"not_ready",
@@ -5276,7 +5424,8 @@
 "options":[
 {
 "value":"0",
-"label":"Off"
+"label":"Off",
+"label_zh":"关闭"
 },
 {
 "value":"1",
@@ -5467,7 +5616,8 @@
 "options":[
 {
 "value":"",
-"label":"None"
+"label":"None",
+"label_zh":"无"
 },
 {
 "value":"com.spotify.music",
@@ -5475,11 +5625,13 @@
 },
 {
 "value":"com.apple.android.music",
-"label":"Apple Music"
+"label":"Apple Music",
+"label_zh":"Apple Music"
 },
 {
 "value":"com.amazon.mp3",
-"label":"Amazon Music"
+"label":"Amazon Music",
+"label_zh":"Amazon Music"
 },
 {
 "value":"com.audible.application",
@@ -5487,7 +5639,8 @@
 },
 {
 "value":"com.clearchannel.iheartradio.controller",
-"label":"iHeart"
+"label":"iHeart",
+"label_zh":"iHeart"
 },
 {
 "value":"no_notification_access",
@@ -5562,7 +5715,8 @@
 },
 {
 "value":"4",
-"label":"Landscape"
+"label":"Landscape",
+"label_zh":"横版"
 }
 ]
 }
@@ -5661,7 +5815,9 @@
 "confidence":"low",
 "control":{
 "type":"toggle"
-}
+},
+"label_zh":"详细的 Live AI 回答",
+"note_zh":"让 Live AI 提供更详细的回答。"
 },
 {
 "key":"developer_charging_leds_enabled",
@@ -5730,7 +5886,9 @@
 "type":"toggle"
 },
 "label_it":"Condividi dati aggiuntivi",
-"note_it":"Per impostazione predefinita, Meta raccoglie i dati necessari per il corretto funzionamento dei tuoi dispositivi. Puoi anche condividere dati aggiuntivi, come la frequenza con cui indossi gli occhiali appoggiati sopra la testa invece che sul naso."
+"note_it":"Per impostazione predefinita, Meta raccoglie i dati necessari per il corretto funzionamento dei tuoi dispositivi. Puoi anche condividere dati aggiuntivi, come la frequenza con cui indossi gli occhiali appoggiati sopra la testa invece che sul naso.",
+"label_zh":"共享更多数据",
+"note_zh":"默认情况下，Meta 会收集让设备正常运行所必需的数据。你也可以共享更多数据，例如你佩戴眼镜时是推在头顶还是架在鼻梁上的频次。"
 },
 {
 "key":"devkit_developer_mode_enabled",
@@ -5808,28 +5966,36 @@
 "label":"Auto-select",
 "label_it":"Selezione automatica",
 "detail":"Default / High, med or low stabilization selected automatically based on video motion",
-"detail_it":"Stabilizzazione predefinita, alta, media o bassa selezionata automaticamente in base al movimento del video"
+"detail_it":"Stabilizzazione predefinita, alta, media o bassa selezionata automaticamente in base al movimento del video",
+"label_zh":"自动选择",
+"detail_zh":"默认。根据视频画面的晃动情况自动选择高、中或低防抖"
 },
 {
 "value":"1",
 "label":"High",
 "label_it":"Alta",
 "detail":"Smoothest stabilization",
-"detail_it":"Stabilizzazione più omogenea"
+"detail_it":"Stabilizzazione più omogenea",
+"label_zh":"高",
+"detail_zh":"最平滑的防抖效果"
 },
 {
 "value":"2",
 "label":"Medium",
 "label_it":"Media",
 "detail":"Some stabilization and horizon correction",
-"detail_it":"Stabilizzazione parziale e correzione dell'orizzonte"
+"detail_it":"Stabilizzazione parziale e correzione dell'orizzonte",
+"label_zh":"中",
+"detail_zh":"一定程度的防抖和水平校正"
 },
 {
 "value":"3",
 "label":"Low",
 "label_it":"Bassa",
 "detail":"Maintains action but removes high jitter",
-"detail_it":"Mantiene l'azione ma rimuove il jitter elevato"
+"detail_it":"Mantiene l'azione ma rimuove il jitter elevato",
+"label_zh":"低",
+"detail_zh":"保留动态感，同时消除明显抖动"
 }
 ]
 },
@@ -5840,7 +6006,9 @@
 264,
 265,
 266
-]
+],
+"label_zh":"视频防抖",
+"note_zh":"相机稳定视频的方式。"
 },
 {
 "key":"emg_instant_action",
@@ -5867,7 +6035,9 @@
 "type":"toggle"
 },
 "label_it":"Avvisi del calendario",
-"note_it":"Ricevi avvisi per gli eventi in programma del calendario"
+"note_it":"Ricevi avvisi per gli eventi in programma del calendario",
+"label_zh":"日历提醒",
+"note_zh":"获取即将到来的日历事件提醒"
 },
 {
 "key":"enable_calendar_event_alert_announce_details",
@@ -5881,7 +6051,9 @@
 "type":"toggle"
 },
 "label_it":"Leggi i dettagli dell'evento",
-"note_it":"Leggi i dettagli dell'evento ad alta voce"
+"note_it":"Leggi i dettagli dell'evento ad alta voce",
+"label_zh":"朗读事件详情",
+"note_zh":"朗读事件详情"
 },
 {
 "key":"enable_calendar_event_alert_wake_display",
@@ -5907,7 +6079,9 @@
 "confidence":"low",
 "control":{
 "type":"toggle"
-}
+},
+"label_zh":"使用 Meta AI 通话",
+"note_zh":"与 Meta AI 通话的开关。眼镜的配置表中会保存该标志位。"
 },
 {
 "key":"enable_google_calendar_event_alert",
@@ -5959,7 +6133,9 @@
 "type":"toggle"
 },
 "label_it":"Leggi i dettagli dell'evento",
-"note_it":"Leggi i dettagli dell'evento ad alta voce"
+"note_it":"Leggi i dettagli dell'evento ad alta voce",
+"label_zh":"朗读事件详情",
+"note_zh":"朗读事件详情"
 },
 {
 "key":"enable_outlook_calendar_event_alert_wake_display",
@@ -5985,7 +6161,9 @@
 "confidence":"low",
 "control":{
 "type":"toggle"
-}
+},
+"label_zh":"将通话记录同步到眼镜",
+"note_zh":"存储并同步到眼镜。眼镜上没有任何功能会使用它。"
 },
 {
 "key":"enable_phone_to_wearable_contacts_sync",
@@ -5997,7 +6175,9 @@
 "confidence":"low",
 "control":{
 "type":"toggle"
-}
+},
+"label_zh":"将联系人同步到眼镜",
+"note_zh":"将手机通讯录同步到眼镜。眼镜上没有任何功能会读取该配置项。"
 },
 {
 "key":"enable_sms_mms_relay",
@@ -6085,7 +6265,8 @@
 "options":[
 {
 "value":"0",
-"label":"Default"
+"label":"Default",
+"label_zh":"默认"
 },
 {
 "value":"50",
@@ -6274,7 +6455,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -6302,7 +6484,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -6484,7 +6667,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -6512,7 +6696,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -6694,7 +6879,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -6722,7 +6908,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -6904,7 +7091,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -6932,7 +7120,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -7114,7 +7303,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -7142,7 +7332,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -7324,7 +7515,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -7352,7 +7544,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -7534,7 +7727,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -7562,7 +7756,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -7744,7 +7939,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -7772,7 +7968,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -7954,7 +8151,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -7982,7 +8180,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -8164,7 +8363,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -8192,7 +8392,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -8374,7 +8575,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -8402,7 +8604,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -8584,7 +8787,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -8612,7 +8816,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -8794,7 +8999,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -8822,7 +9028,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -9004,7 +9211,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -9032,7 +9240,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -9214,7 +9423,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -9242,7 +9452,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -9424,7 +9635,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -9452,7 +9664,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -9634,7 +9847,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -9662,7 +9876,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -9844,7 +10059,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -9872,7 +10088,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -10054,7 +10271,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -10082,7 +10300,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -10264,7 +10483,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -10292,7 +10512,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -10474,7 +10695,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -10502,7 +10724,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -10892,7 +11115,8 @@
 {
 "value":"-1",
 "label":"Default",
-"hidden":true
+"hidden":true,
+"label_zh":"默认"
 },
 {
 "value":"0",
@@ -10936,7 +11160,9 @@
 "confidence":"medium",
 "control":{
 "type":"toggle"
-}
+},
+"label_zh":"Live AI",
+"note_zh":"开启或关闭 Live AI。"
 },
 {
 "key":"live_ai_mss_start_async_enabled",
@@ -10960,7 +11186,9 @@
 "confidence":"medium",
 "control":{
 "type":"toggle"
-}
+},
+"label_zh":"Live AI 仅语音",
+"note_zh":"将 Live AI 设置为仅语音。手机会在每次语音流传输时发送该标志位。"
 },
 {
 "key":"live_caption_voice_id",
@@ -10975,7 +11203,8 @@
 "options":[
 {
 "value":"",
-"label":"Default"
+"label":"Default",
+"label_zh":"默认"
 },
 {
 "value":"en_US.mai_01",
@@ -11065,7 +11294,8 @@
 "options":[
 {
 "value":"",
-"label":"Default"
+"label":"Default",
+"label_zh":"默认"
 },
 {
 "value":"en_US.mai_01",
@@ -11116,7 +11346,9 @@
 "confidence":"medium",
 "control":{
 "type":"toggle"
-}
+},
+"label_zh":"照片位置标记",
+"note_zh":"决定是否为照片和视频添加位置标记。眼镜不会读取该设置。"
 },
 {
 "key":"location_chatbot_enabled",
@@ -11128,7 +11360,9 @@
 "confidence":"medium",
 "control":{
 "type":"toggle"
-}
+},
+"label_zh":"Meta AI 的位置权限",
+"note_zh":"允许 Meta AI 在处理眼镜请求时使用手机位置。关闭后将拒绝位置请求。"
 },
 {
 "key":"location_global_enabled",
@@ -11140,7 +11374,9 @@
 "confidence":"high",
 "control":{
 "type":"toggle"
-}
+},
+"label_zh":"位置服务",
+"note_zh":"为眼镜开启或关闭位置功能。"
 },
 {
 "key":"mdm_enabled",
@@ -11166,7 +11402,9 @@
 "type":"toggle"
 },
 "label_it":"Livellamento automatico",
-"note_it":"Inquadra automaticamente le tue acquisizioni per la migliore qualità."
+"note_it":"Inquadra automaticamente le tue acquisizioni per la migliore qualità.",
+"label_zh":"自动水平校正",
+"note_zh":"自动调整取景，以获得最佳画质。"
 },
 {
 "key":"media_cloud_enabled",
@@ -11178,7 +11416,9 @@
 "confidence":"low",
 "control":{
 "type":"toggle"
-}
+},
+"label_zh":"媒体云端功能",
+"note_zh":"允许 Meta AI 在云端处理照片和视频。"
 },
 {
 "key":"MEDIA_GESTURE_EMG_INDEX_FINGER_SINGLE_TAP",
@@ -11321,7 +11561,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -11349,7 +11590,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -11531,7 +11773,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -11559,7 +11802,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -11741,7 +11985,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -11769,7 +12014,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -11951,7 +12197,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -11979,7 +12226,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -12161,7 +12409,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -12189,7 +12438,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -12371,7 +12621,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -12399,7 +12650,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -12452,7 +12704,9 @@
 "type":"toggle"
 },
 "label_it":"Qualità dei contenuti multimediali",
-"note_it":"Ritaglia automaticamente le acquisizioni quando la fotocamera è parzialmente bloccata da elementi come tese di cappelli o capelli."
+"note_it":"Ritaglia automaticamente le acquisizioni quando la fotocamera è parzialmente bloccata da elementi come tese di cappelli o capelli.",
+"label_zh":"媒体质量",
+"note_zh":"当相机被帽檐、头发等物体部分遮挡时，自动裁剪拍摄画面。"
 },
 {
 "key":"messenger_contacts_syncing",
@@ -12579,7 +12833,9 @@
 "type":"toggle"
 },
 "label_it":"Audio mono",
-"note_it":"Riproduci lo stesso audio dagli altoparlanti sinistro e destro."
+"note_it":"Riproduci lo stesso audio dagli altoparlanti sinistro e destro.",
+"label_zh":"单声道音频",
+"note_zh":"左右扬声器播放相同的声音。"
 },
 {
 "key":"motion_blur_reduction_enabled",
@@ -12591,7 +12847,9 @@
 "confidence":"medium",
 "control":{
 "type":"toggle"
-}
+},
+"label_zh":"动态模糊降低",
+"note_zh":"开启或关闭视频的动态模糊降低。"
 },
 {
 "key":"mps_transfer_unprocessed_image_assets",
@@ -12606,7 +12864,8 @@
 "options":[
 {
 "value":"0",
-"label":"Off"
+"label":"Off",
+"label_zh":"关闭"
 },
 {
 "value":"1",
@@ -12628,7 +12887,8 @@
 "options":[
 {
 "value":"0",
-"label":"Off"
+"label":"Off",
+"label_zh":"关闭"
 },
 {
 "value":"1",
@@ -12656,7 +12916,9 @@
 264,
 265,
 266
-]
+],
+"label_zh":"录制时播放",
+"note_zh":"允许在录制视频时播放媒体。媒体中的声音可能会被录入。"
 },
 {
 "key":"music_partner_3_enabled",
@@ -12683,22 +12945,28 @@
 "options":[
 {
 "value":"3600",
-"label":"1 hour"
+"label":"1 hour",
+"label_zh":"1 小时"
 },
 {
 "value":"7200",
-"label":"2 hours"
+"label":"2 hours",
+"label_zh":"2 小时"
 },
 {
 "value":"14400",
-"label":"4 hours"
+"label":"4 hours",
+"label_zh":"4 小时"
 },
 {
 "value":"28800",
-"label":"8 hours"
+"label":"8 hours",
+"label_zh":"8 小时"
 }
 ]
-}
+},
+"label_zh":"默认暂停时长",
+"note_zh":"公告暂停的默认时长，以秒为单位。Meta 应用提供 1、2、4 和 8 小时选项。"
 },
 {
 "key":"mute_announcements_end_time",
@@ -12737,7 +13005,9 @@
 "confidence":"medium",
 "control":{
 "type":"toggle"
-}
+},
+"label_zh":"无需唤醒词即可说话",
+"note_zh":"无需先说出唤醒词，即可直接与助手对话。"
 },
 {
 "key":"nose_occlusion_tuning_enabled",
@@ -12764,23 +13034,29 @@
 "options":[
 {
 "value":"1",
-"label":"Automatic"
+"label":"Automatic",
+"label_zh":"自动"
 },
 {
 "value":"2",
-"label":"Low"
+"label":"Low",
+"label_zh":"低"
 },
 {
 "value":"3",
-"label":"Medium"
+"label":"Medium",
+"label_zh":"中"
 },
 {
 "value":"4",
-"label":"High"
+"label":"High",
+"label_zh":"高"
 }
 ]
 },
-"label_it":"Luminosità del LED di notifica"
+"label_it":"Luminosità del LED di notifica",
+"label_zh":"通知 LED 亮度",
+"note_zh":"提示灯的亮度。无论此项如何设置，Java LED 代码都使用同一个固定亮度。"
 },
 {
 "key":"notification_volume",
@@ -12796,7 +13072,9 @@
 "max":127.0,
 "step":1.0,
 "unit":""
-}
+},
+"label_zh":"通知音量",
+"note_zh":"通知提示音在音频系统绝对音量刻度上的级别。"
 },
 {
 "key":"occlusion_detection_enabled",
@@ -12808,7 +13086,9 @@
 "confidence":"medium",
 "control":{
 "type":"toggle"
-}
+},
+"label_zh":"遮挡检测",
+"note_zh":"检测是否有物体遮挡相机视野。"
 },
 {
 "key":"oobe_session_id",
@@ -13069,7 +13349,9 @@
 "confidence":"low",
 "control":{
 "type":"toggle"
-}
+},
+"label_zh":"被动解锁手机",
+"note_zh":"开启或关闭被动解锁手机。"
 },
 {
 "key":"passive_visual_capture_enabled",
@@ -13081,7 +13363,9 @@
 "confidence":"high",
 "control":{
 "type":"toggle"
-}
+},
+"label_zh":"被动视觉捕捉",
+"note_zh":"开启或关闭被动相机拍摄。该项由手机应用的设置页面写入。"
 },
 {
 "key":"phone_contacts_syncing",
@@ -13106,7 +13390,9 @@
 "confidence":"medium",
 "control":{
 "type":"toggle"
-}
+},
+"label_zh":"佩戴姿态检测",
+"note_zh":"开启或关闭佩戴姿态检测。手机应用会列出该选项，但眼镜不会读取它。"
 },
 {
 "key":"qr_payments_india_mc_enabled",
@@ -13182,27 +13468,34 @@
 {
 "value":"text",
 "label":"Messaging",
-"label_it":"Messaggio"
+"label_it":"Messaggio",
+"label_zh":"发送消息"
 },
 {
 "value":"voice",
 "label":"Voice messaging",
 "label_it":"Messaggio vocale",
 "detail":"Only available for WhatsApp, Messenger, and Instagram",
-"detail_it":"Disponibile solo per WhatsApp, Messenger e Instagram"
+"detail_it":"Disponibile solo per WhatsApp, Messenger e Instagram",
+"label_zh":"语音消息",
+"detail_zh":"仅适用于 WhatsApp、Messenger 和 Instagram"
 },
 {
 "value":"call",
 "label":"Calling",
-"label_it":"Chiamata"
+"label_it":"Chiamata",
+"label_zh":"拨打电话"
 },
 {
 "value":"",
 "label":"Not set",
-"hidden":true
+"hidden":true,
+"label_zh":"未设置"
 }
 ]
-}
+},
+"label_zh":"快捷操作",
+"note_zh":"选择快捷操作执行的内容：发送消息、语音消息或拨打电话。"
 },
 {
 "key":"quick_clips_photo_capture_enabled",
@@ -13216,7 +13509,9 @@
 "type":"toggle"
 },
 "label_it":"Foto dinamica",
-"note_it":"Acquisisci più fotogrammi con ogni foto per scegliere quello che preferisci."
+"note_it":"Acquisisci più fotogrammi con ogni foto per scegliere quello che preferisci.",
+"label_zh":"动态照片",
+"note_zh":"每张照片拍摄更多画面，方便你挑选最喜欢的。"
 },
 {
 "key":"qva_enabled",
@@ -13270,7 +13565,9 @@
 "label":"Default",
 "label_it":"Predefinito",
 "detail":"1080p at 30fps",
-"detail_it":"1080p a 30 fps"
+"detail_it":"1080p a 30 fps",
+"label_zh":"默认",
+"detail_zh":"1080p，30fps"
 },
 {
 "value":"2",
@@ -13285,7 +13582,9 @@
 264,
 265,
 266
-]
+],
+"label_zh":"高帧率",
+"detail_zh":"1080p，60fps"
 },
 {
 "value":"1",
@@ -13299,7 +13598,9 @@
 264,
 265,
 266
-]
+],
+"label_zh":"高分辨率",
+"detail_zh":"3K，30fps"
 },
 {
 "value":"3",
@@ -13307,7 +13608,9 @@
 "label_it":"Risoluzione ridotta",
 "detail":"1920x1440 at 30fps",
 "detail_it":"1920x1440 a 30 fps",
-"hidden":true
+"hidden":true,
+"label_zh":"较低分辨率",
+"detail_zh":"1920x1440，30fps"
 },
 {
 "value":"4",
@@ -13315,7 +13618,9 @@
 "label_it":"Orizzontale",
 "detail":"2K at 30fps",
 "detail_it":"2K a 30 fps",
-"hidden":true
+"hidden":true,
+"label_zh":"横版",
+"detail_zh":"2K，30fps"
 },
 {
 "value":"5",
@@ -13323,7 +13628,9 @@
 "label_it":"Risoluzione ultra elevata",
 "detail":"4K at 30fps",
 "detail_it":"4K a 30 fps",
-"hidden":true
+"hidden":true,
+"label_zh":"超高清分辨率",
+"detail_zh":"4K，30fps"
 }
 ]
 },
@@ -13331,7 +13638,9 @@
 "note_it":"La modifica della risoluzione o della frequenza dei fotogrammi influisce su autonomia della batteria, spazio, durata di registrazione e orientamento.",
 "not_products":[
 259
-]
+],
+"label_zh":"分辨率和帧率",
+"note_zh":"更改分辨率或帧率会影响电池续航、存储空间、录制时长和拍摄方向。"
 },
 {
 "key":"sample_app_1_enabled",
@@ -13474,7 +13783,9 @@
 "control":{
 "type":"toggle"
 },
-"label_it":"Inverti scorrimento orizzontale"
+"label_it":"Inverti scorrimento orizzontale",
+"label_zh":"反转水平滑动方向",
+"note_zh":"反转触控板上的水平滑动方向。"
 },
 {
 "key":"sg_captouch_invert_swipe_direction_vertical",
@@ -13487,7 +13798,9 @@
 "control":{
 "type":"toggle"
 },
-"label_it":"Inverti scorrimento verticale"
+"label_it":"Inverti scorrimento verticale",
+"label_zh":"反转垂直滑动方向",
+"note_zh":"反转触控板上的垂直滑动方向。"
 },
 {
 "key":"sg_caterpillar_invert_swipe_direction_horizontal",
@@ -13500,7 +13813,8 @@
 "control":{
 "type":"toggle"
 },
-"label_it":"Inverti scorrimento orizzontale"
+"label_it":"Inverti scorrimento orizzontale",
+"label_zh":"反转水平滑动方向"
 },
 {
 "key":"sg_caterpillar_invert_swipe_direction_vertical",
@@ -13513,7 +13827,8 @@
 "control":{
 "type":"toggle"
 },
-"label_it":"Inverti scorrimento verticale"
+"label_it":"Inverti scorrimento verticale",
+"label_zh":"反转垂直滑动方向"
 },
 {
 "key":"sg_disable_thermal_shutdown",
@@ -13562,7 +13877,9 @@
 "confidence":"high",
 "control":{
 "type":"toggle"
-}
+},
+"label_zh":"免打扰",
+"note_zh":"佩戴眼镜期间，眼镜上的来电铃声将被静音。"
 },
 {
 "key":"sg_emg_display_off",
@@ -13612,7 +13929,9 @@
 "confidence":"medium",
 "control":{
 "type":"toggle"
-}
+},
+"label_zh":"耳机模式",
+"note_zh":"将眼镜音频切换为耳机模式。"
 },
 {
 "key":"sg_instant_action",
@@ -13649,7 +13968,8 @@
 "confidence":"medium",
 "control":{
 "type":"toggle"
-}
+},
+"note_zh":"此开关仅用于存储和同步，眼镜上不会有任何功能随之改变。"
 },
 {
 "key":"sg_mwa_onboarding_status",
@@ -13693,7 +14013,8 @@
 },
 {
 "value":"1",
-"label":"Off"
+"label":"Off",
+"label_zh":"关闭"
 }
 ]
 }
@@ -13754,7 +14075,8 @@
 "confidence":"medium",
 "control":{
 "type":"toggle"
-}
+},
+"note_zh":"此开关仅用于存储和同步，眼镜上不会有任何功能随之改变。"
 },
 {
 "key":"sg_sync_accessibility_display_magnification_scale",
@@ -13770,7 +14092,8 @@
 {
 "value":"0",
 "label":"1.5x",
-"label_it":"1,5x"
+"label_it":"1,5x",
+"label_zh":"1.5 倍"
 },
 {
 "value":"1",
@@ -13830,7 +14153,8 @@
 "options":[
 {
 "value":"0",
-"label":"1x"
+"label":"1x",
+"label_zh":"1 倍"
 },
 {
 "value":"1",
@@ -13850,7 +14174,8 @@
 {
 "value":"4",
 "label":"1.5x",
-"label_it":"1,5x"
+"label_it":"1,5x",
+"label_zh":"1.5 倍"
 },
 {
 "value":"5",
@@ -13990,7 +14315,8 @@
 "options":[
 {
 "value":"0",
-"label":"Off"
+"label":"Off",
+"label_zh":"关闭"
 },
 {
 "value":"1",
@@ -14011,7 +14337,9 @@
 "type":"toggle"
 },
 "label_it":"Risposte suggerite",
-"note_it":"Mostra risposte rapide suggerite in base al contesto della conversazione."
+"note_it":"Mostra risposte rapide suggerite in base al contesto della conversazione.",
+"label_zh":"建议回复",
+"note_zh":"根据对话内容显示快捷的推荐回复。"
 },
 {
 "key":"spatial_media_enabled",
@@ -14051,7 +14379,9 @@
 "confidence":"medium",
 "control":{
 "type":"toggle"
-}
+},
+"label_zh":"Spotify Tap",
+"note_zh":"点按并长按眼镜即可播放 Spotify。"
 },
 {
 "key":"STANDBY_GESTURE_EMG_INDEX_FINGER_IA",
@@ -14194,7 +14524,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -14222,7 +14553,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -14404,7 +14736,8 @@
 },
 {
 "value":"KEYCODE_ACTION_BUTTON",
-"label":"Action button press"
+"label":"Action button press",
+"label_zh":"轻按操作按钮"
 },
 {
 "value":"KEYCODE_ACTION_BUTTON_SHORT",
@@ -14432,7 +14765,8 @@
 },
 {
 "value":"KEYCODE_CONVERSATION_FOCUS",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"KEYCODE_OPEN_CAMERA",
@@ -14501,90 +14835,113 @@
 {
 "value":"0",
 "label":"Unknown",
-"hidden":true
+"hidden":true,
+"label_zh":"未知"
 },
 {
 "value":"1",
-"label":"None"
+"label":"None",
+"label_zh":"无"
 },
 {
 "value":"2",
-"label":"Assistant"
+"label":"Assistant",
+"label_zh":"助手"
 },
 {
 "value":"3",
-"label":"Spotify Tap"
+"label":"Spotify Tap",
+"label_zh":"Spotify Tap"
 },
 {
 "value":"4",
-"label":"Amazon Music"
+"label":"Amazon Music",
+"label_zh":"Amazon Music"
 },
 {
 "value":"5",
-"label":"Apple Music"
+"label":"Apple Music",
+"label_zh":"Apple Music"
 },
 {
 "value":"6",
-"label":"iHeart"
+"label":"iHeart",
+"label_zh":"iHeart"
 },
 {
 "value":"7",
-"label":"Conversation focus"
+"label":"Conversation focus",
+"label_zh":"对话焦点"
 },
 {
 "value":"8",
-"label":"Quick actions"
+"label":"Quick actions",
+"label_zh":"快捷操作"
 },
 {
 "value":"9",
-"label":"Sensing"
+"label":"Sensing",
+"label_zh":"感知"
 },
 {
 "value":"10",
-"label":"AI prompt"
+"label":"AI prompt",
+"label_zh":"AI 提示"
 },
 {
 "value":"11",
-"label":"Live AI"
+"label":"Live AI",
+"label_zh":"Live AI"
 },
 {
 "value":"12",
-"label":"Be My Eyes"
+"label":"Be My Eyes",
+"label_zh":"Be My Eyes"
 },
 {
 "value":"13",
-"label":"Live translation"
+"label":"Live translation",
+"label_zh":"实时翻译"
 },
 {
 "value":"14",
-"label":"Heart rate (fitness)"
+"label":"Heart rate (fitness)",
+"label_zh":"心率（健身）"
 },
 {
 "value":"15",
-"label":"Workout duration"
+"label":"Workout duration",
+"label_zh":"运动时长"
 },
 {
 "value":"16",
-"label":"Workout distance"
+"label":"Workout distance",
+"label_zh":"运动距离"
 },
 {
 "value":"17",
-"label":"Workout pace"
+"label":"Workout pace",
+"label_zh":"运动配速"
 },
 {
 "value":"18",
-"label":"Hearing Dolores"
+"label":"Hearing Dolores",
+"label_zh":"Dolores 助听"
 },
 {
 "value":"19",
-"label":"Music"
+"label":"Music",
+"label_zh":"音乐"
 },
 {
 "value":"20",
-"label":"Instagram Instants share"
+"label":"Instagram Instants share",
+"label_zh":"分享 Instagram 即时照片"
 }
 ]
-}
+},
+"label_zh":"点按并长按操作",
+"note_zh":"设置触控板点按并长按后执行的操作，例如打开 Meta AI 或播放音乐。"
 },
 {
 "key":"telecom_enable_untethered_relay",
@@ -14625,7 +14982,8 @@
 "options":[
 {
 "value":"off",
-"label":"Off"
+"label":"Off",
+"label_zh":"关闭"
 },
 {
 "value":"gave_up",
@@ -14633,7 +14991,8 @@
 },
 {
 "value":"none",
-"label":"None"
+"label":"None",
+"label_zh":"无"
 },
 {
 "value":"not_ready",
@@ -14772,26 +15131,33 @@
 "options":[
 {
 "value":"75",
-"label":"0.75x"
+"label":"0.75x",
+"label_zh":"0.75 倍"
 },
 {
 "value":"100",
-"label":"1x"
+"label":"1x",
+"label_zh":"1 倍"
 },
 {
 "value":"125",
-"label":"1.25x"
+"label":"1.25x",
+"label_zh":"1.25 倍"
 },
 {
 "value":"150",
-"label":"1.5x"
+"label":"1.5x",
+"label_zh":"1.5 倍"
 },
 {
 "value":"175",
-"label":"1.75x"
+"label":"1.75x",
+"label_zh":"1.75 倍"
 }
 ]
-}
+},
+"label_zh":"语速",
+"note_zh":"眼镜朗读的语速，100 为正常速度。"
 },
 {
 "key":"two_stage_eis",
@@ -14921,7 +15287,9 @@
 "type":"toggle"
 },
 "label_it":"Annuncia chiamate",
-"note_it":"Senti chi ti sta chiamando."
+"note_it":"Senti chi ti sta chiamando.",
+"label_zh":"播报来电",
+"note_zh":"听到是谁在给你打电话。"
 },
 {
 "key":"verified_session_enabled",
@@ -14934,7 +15302,9 @@
 "control":{
 "type":"toggle"
 },
-"label_it":"Sessioni verificate"
+"label_it":"Sessioni verificate",
+"label_zh":"已验证会话",
+"note_zh":"解锁手机后，会话将保持已验证状态，直到你摘下眼镜。"
 },
 {
 "key":"video_duration_ms",
@@ -14950,17 +15320,20 @@
 {
 "value":"30000",
 "label":"30 seconds",
-"label_it":"30 secondi"
+"label_it":"30 secondi",
+"label_zh":"30 秒"
 },
 {
 "value":"60000",
 "label":"1 minute",
-"label_it":"1 minuto"
+"label_it":"1 minuto",
+"label_zh":"1 分钟"
 },
 {
 "value":"180000",
 "label":"3 minutes",
-"label_it":"3 minuti"
+"label_it":"3 minuti",
+"label_zh":"3 分钟"
 },
 {
 "value":"300000",
@@ -14974,24 +15347,29 @@
 264,
 265,
 266
-]
+],
+"label_zh":"5 分钟",
+"detail_zh":"仅限默认分辨率"
 },
 {
 "value":"600000",
 "label":"10 minutes",
-"label_it":"10 minuti"
+"label_it":"10 minuti",
+"label_zh":"10 分钟"
 },
 {
 "value":"5000",
 "label":"5 seconds",
 "label_it":"5 secondi",
-"hidden":true
+"hidden":true,
+"label_zh":"5 秒"
 },
 {
 "value":"15000",
 "label":"15 seconds",
 "label_it":"15 secondi",
-"hidden":true
+"hidden":true,
+"label_zh":"15 秒"
 }
 ]
 },
@@ -14999,7 +15377,9 @@
 "note_it":"Scegli una durata massima del video. Questi limiti aiutano a ottimizzare la condivisione e lo spazio.",
 "not_products":[
 259
-]
+],
+"label_zh":"视频时长",
+"note_zh":"选择视频的最大时长。这些限制有助于优化分享和存储空间。"
 },
 {
 "key":"video_fps",
@@ -15118,19 +15498,24 @@
 "options":[
 {
 "value":"0",
-"label":"Left hand"
+"label":"Left hand",
+"label_zh":"左手"
 },
 {
 "value":"1",
-"label":"Right hand"
+"label":"Right hand",
+"label_zh":"右手"
 },
 {
 "value":"2",
-"label":"Both hands"
+"label":"Both hands",
+"label_zh":"双手"
 }
 ]
 },
-"label_it":"Scegli mano"
+"label_it":"Scegli mano",
+"label_zh":"选择惯用手",
+"note_zh":"常亮相机在识别唤醒手势时所追踪的手。"
 },
 {
 "key":"wake_only_mode_enabled",
@@ -15169,7 +15554,9 @@
 "type":"toggle"
 },
 "label_it":"\"Hey Meta\"",
-"note_it":"Di' \"Hey Meta\" o \"Ok Meta\" per iniziare un comando vocale."
+"note_it":"Di' \"Hey Meta\" o \"Ok Meta\" per iniziare un comando vocale.",
+"label_zh":"“Hey Meta”",
+"note_zh":"说出 “Hey Meta” 或 “OK Meta” 即可启动语音指令。"
 },
 {
 "key":"wakeword_sound_enabled",
@@ -15183,7 +15570,9 @@
 "type":"toggle"
 },
 "label_it":"Suono di attivazione",
-"note_it":"I tuoi occhiali emetteranno un suono quando dici \"Hey Meta\" o \"Ok Meta\"."
+"note_it":"I tuoi occhiali emetteranno un suono quando dici \"Hey Meta\" o \"Ok Meta\".",
+"label_zh":"唤醒提示音",
+"note_zh":"说出 “Hey Meta” 或 “OK Meta” 后，眼镜会发出提示音。"
 },
 {
 "key":"water_eject_enabled",
@@ -15195,7 +15584,9 @@
 "confidence":"high",
 "control":{
 "type":"toggle"
-}
+},
+"label_zh":"排水",
+"note_zh":"通过播放排水音效清除扬声器中的积水。"
 },
 {
 "key":"wear_detection_enabled",
@@ -15209,7 +15600,9 @@
 "type":"toggle"
 },
 "label_it":"Rileva quando indossi gli occhiali",
-"note_it":"Le funzioni saranno messe in pausa quando rimuovi gli occhiali e riprenderanno quando li indossi di nuovo."
+"note_it":"Le funzioni saranno messe in pausa quando rimuovi gli occhiali e riprenderanno quando li indossi di nuovo.",
+"label_zh":"佩戴检测",
+"note_zh":"摘下眼镜时相关功能将暂停，重新戴上后自动恢复。"
 },
 {
 "key":"wearable_e2ee_pk_uuid",
@@ -15238,7 +15631,8 @@
 "options":[
 {
 "value":"off",
-"label":"Off"
+"label":"Off",
+"label_zh":"关闭"
 },
 {
 "value":"gave_up",
@@ -15246,7 +15640,8 @@
 },
 {
 "value":"none",
-"label":"None"
+"label":"None",
+"label_zh":"无"
 },
 {
 "value":"not_ready",
@@ -15302,7 +15697,8 @@
 "confidence":"low",
 "control":{
 "type":"toggle"
-}
+},
+"note_zh":"此开关仅用于存储和同步，眼镜上不会有任何功能随之改变。"
 },
 {
 "key":"wellness_partner_5_enabled",
