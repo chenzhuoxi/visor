@@ -39,6 +39,11 @@
             <action android:name="android.intent.action.SENDTO" />
             <data android:scheme="smsto" />
         </intent>
+        <!-- The text to speech engines: without this the system tells the app about none of them on
+             Android 11 and later, and TextToSpeech can only fail. -->
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
         <intent>
             <action android:name="android.media.browse.MediaBrowserService" />
         </intent>

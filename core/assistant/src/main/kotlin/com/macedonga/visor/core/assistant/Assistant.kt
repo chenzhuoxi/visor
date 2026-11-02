@@ -789,9 +789,7 @@ class Assistant(
             update(interaction) { it.copy(answer = text) }
             deliver(l, interaction, transcript, text)
         } catch (error: Exception) {
-            // The glasses speak it themselves: a phone that cannot speak must not silence the turn.
-            say("The reply prompt did not reach the glasses (${error.message}); the glasses will say it instead")
-            runCatching { speakOnGlasses(l, interaction, transcript, what) }
+            say("The reply prompt did not reach the glasses: ${error.message}")
         } finally {
             if (link === l) _phase.value = AssistantPhase.LISTENING
         }
@@ -970,22 +968,18 @@ class Assistant(
      * it. The milliseconds of audio sent, 0 in the glasses' voice.
      */
     private suspend fun deliver(l: Link, interaction: String, transcript: String, text: String, listen: Boolean = true, live: Boolean = false): Long {
-        // The glasses' own voice speaks only their own language. A speech language that is the glasses' own
-        // language needs no phone voice: the glasses already speak it, and asking the phone to speak it would
-        // fail outright where the phone has no text to speech at all.
-        val speech = store.config.value.speechLanguage
-        val spokenByGlasses = speech.isEmpty() || Locale.forLanguageTag(speech).language == l.locale.language
-        say("Delivering: glassesVoice=${store.config.value.glassesVoice}, speech=\\\"$speech\\\", glassesLocale=${l.locale}, sessionTurn=${l.sessionTurn}, spokenByGlasses=$spokenByGlasses")
-        if (store.config.value.glassesVoice && !l.sessionTurn && spokenByGlasses) {
+        // The glasses' own voice speaks only their own language.
+        if (store.config.value.glassesVoice && !l.sessionTurn && store.config.value.speechLanguage.isEmpty()) {
             speakOnGlasses(l, interaction, transcript, text, listen)
             return 0
         }
         // The phone speaks it, but a phone without a text to speech engine cannot: fall back to the glasses'
-        // own voice rather than losing the answer. The glasses speak their own language, so the answer is
-        // still heard even when the wearer picked the phone's voice for a language the glasses lack.
+        // own voice rather than losing the answer. A session turn cannot: there the glasses' own voice would
+        // end the whole session.
         val packets = try {
             voice.speak(text, spoken(l))
         } catch (error: Exception) {
+            if (l.sessionTurn) throw error
             say("The phone could not speak the answer (${error.message}); the glasses will say it instead")
             speakOnGlasses(l, interaction, transcript, text, listen)
             return 0

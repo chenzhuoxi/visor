@@ -34,7 +34,6 @@ data class AssistantConfig(
 
 /** Languages the wearer can speak that the glasses have no pack for, heard and spoken by the phone (issue #38). */
 val SPEECH_LANGUAGES = listOf(
-    "zh-CN", "zh-TW",
     "ru-RU", "uk-UA", "pl-PL", "cs-CZ", "ro-RO", "hu-HU", "el-GR", "sv-SE", "da-DK", "nb-NO", "fi-FI",
     "he-IL", "ar-SA", "vi-VN", "id-ID", "th-TH",
 )
