@@ -789,7 +789,9 @@ class Assistant(
             update(interaction) { it.copy(answer = text) }
             deliver(l, interaction, transcript, text)
         } catch (error: Exception) {
-            say("The reply prompt did not reach the glasses: ${error.message}")
+            // The glasses speak it themselves: a phone that cannot speak must not silence the turn.
+            say("The reply prompt did not reach the glasses (${error.message}); the glasses will say it instead")
+            runCatching { speakOnGlasses(l, interaction, transcript, what) }
         } finally {
             if (link === l) _phase.value = AssistantPhase.LISTENING
         }
@@ -978,11 +980,12 @@ class Assistant(
             return 0
         }
         // The phone speaks it, but a phone without a text to speech engine cannot: fall back to the glasses'
-        // own voice rather than losing the answer.
+        // own voice rather than losing the answer. The glasses speak their own language, so the answer is
+        // still heard even when the wearer picked the phone's voice for a language the glasses lack.
         val packets = try {
             voice.speak(text, spoken(l))
         } catch (error: Exception) {
-            if (!store.config.value.glassesVoice || l.sessionTurn) throw error
+            if (l.sessionTurn) throw error
             say("The phone could not speak the answer (${error.message}); the glasses will say it instead")
             speakOnGlasses(l, interaction, transcript, text, listen)
             return 0

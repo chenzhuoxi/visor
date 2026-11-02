@@ -64,7 +64,15 @@ class Voice(private val context: Context) {
             made = TextToSpeech(context) { cont.resume(it) }
         }
         val engine = checkNotNull(made)
-        check(status == TextToSpeech.SUCCESS) { "the phone has no working text to speech" }
+        if (status != TextToSpeech.SUCCESS) {
+            // Do not keep a failed engine: the wearer may install or enable one, and the next attempt
+            // should try again rather than reuse this broken one.
+            engine.shutdown()
+            val names = runCatching { engine.getEngines().joinToString(", ") { it.label } }.getOrDefault("")
+            throw IllegalStateException(
+                "the phone has no working text to speech" + if (names.isEmpty()) "" else " (engines: $names)",
+            )
+        }
         engine.setOnUtteranceProgressListener(
             object : UtteranceProgressListener() {
                 override fun onStart(utteranceId: String) = Unit
