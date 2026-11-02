@@ -968,8 +968,12 @@ class Assistant(
      * it. The milliseconds of audio sent, 0 in the glasses' voice.
      */
     private suspend fun deliver(l: Link, interaction: String, transcript: String, text: String, listen: Boolean = true, live: Boolean = false): Long {
-        // The glasses' own voice speaks only their own language.
-        if (store.config.value.glassesVoice && !l.sessionTurn && store.config.value.speechLanguage.isEmpty()) {
+        // The glasses' own voice speaks only their own language. A speech language that is the glasses' own
+        // language needs no phone voice: the glasses already speak it, and asking the phone to speak it would
+        // fail outright where the phone has no text to speech at all.
+        val speech = store.config.value.speechLanguage
+        val spokenByGlasses = speech.isEmpty() || Locale.forLanguageTag(speech).language == l.locale.language
+        if (store.config.value.glassesVoice && !l.sessionTurn && spokenByGlasses) {
             speakOnGlasses(l, interaction, transcript, text, listen)
             return 0
         }
