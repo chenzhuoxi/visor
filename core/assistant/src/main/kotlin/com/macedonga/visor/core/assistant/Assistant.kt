@@ -975,6 +975,7 @@ class Assistant(
         // fail outright where the phone has no text to speech at all.
         val speech = store.config.value.speechLanguage
         val spokenByGlasses = speech.isEmpty() || Locale.forLanguageTag(speech).language == l.locale.language
+        say("Delivering: glassesVoice=${store.config.value.glassesVoice}, speech=\\\"$speech\\\", glassesLocale=${l.locale}, sessionTurn=${l.sessionTurn}, spokenByGlasses=$spokenByGlasses")
         if (store.config.value.glassesVoice && !l.sessionTurn && spokenByGlasses) {
             speakOnGlasses(l, interaction, transcript, text, listen)
             return 0
@@ -985,7 +986,6 @@ class Assistant(
         val packets = try {
             voice.speak(text, spoken(l))
         } catch (error: Exception) {
-            if (l.sessionTurn) throw error
             say("The phone could not speak the answer (${error.message}); the glasses will say it instead")
             speakOnGlasses(l, interaction, transcript, text, listen)
             return 0
