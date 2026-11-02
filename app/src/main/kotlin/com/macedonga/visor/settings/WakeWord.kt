@@ -314,7 +314,7 @@ fun WakeWordScreen(model: WakeWordModel = hiltViewModel()) = SettingsHost(seeThr
     if (editing) {
         TextSheet(
             stringResource(R.string.ww_phrase), phrase, onSave = model::setPhrase, onDismiss = { editing = false },
-            hint = "Hey Jarvis", valid = { it.trim().length >= WakeWordModel.MIN_LETTERS },
+            hint = stringResource(R.string.wake_word_example_jarvis), valid = { it.trim().length >= WakeWordModel.MIN_LETTERS },
         )
     }
 }
