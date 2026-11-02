@@ -977,7 +977,16 @@ class Assistant(
             speakOnGlasses(l, interaction, transcript, text, listen)
             return 0
         }
-        val packets = voice.speak(text, spoken(l))
+        // The phone speaks it, but a phone without a text to speech engine cannot: fall back to the glasses'
+        // own voice rather than losing the answer.
+        val packets = try {
+            voice.speak(text, spoken(l))
+        } catch (error: Exception) {
+            if (!store.config.value.glassesVoice || l.sessionTurn) throw error
+            say("The phone could not speak the answer (${error.message}); the glasses will say it instead")
+            speakOnGlasses(l, interaction, transcript, text, listen)
+            return 0
+        }
         // A session turn ends on the VARM; there, and in Live AI, ev60 would end the whole session.
         stream(l, interaction, transcript, text, packets, complete = !l.sessionTurn && !live, listen = listen)
         return packets.sumOf { it.durationUs } / 1000
