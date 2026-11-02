@@ -6,8 +6,18 @@ import java.util.Locale
  * One of the glasses' voices: its id (the value of assistant_voice_id), the name the Meta app gives it if any, and
  * its tone. Most languages' voices have no name, only a tone.
  */
-data class GlassesVoice(val id: String, val en: String, val it: String, val name: String? = null) {
-    fun tone(): String = if (Locale.getDefault().language == "it") it else en
+data class GlassesVoice(
+    val id: String,
+    val en: String,
+    val it: String,
+    val name: String? = null,
+    val zh: String? = null,
+) {
+    fun tone(): String = when (Locale.getDefault().language) {
+        "it" -> it
+        "zh" -> zh ?: en
+        else -> en
+    }
     fun label(): String = name ?: tone()
 }
 
@@ -25,7 +35,7 @@ data class GlassesLanguage(val locale: String, val pack: String?, val voices: Li
     fun localName(): String = javaLocale.getDisplayName(Locale.getDefault()).replaceFirstChar { it.titlecase() }
 }
 
-private fun v(id: String, en: String, it: String) = GlassesVoice(id, en, it)
+private fun v(id: String, en: String, it: String, zh: String? = null) = GlassesVoice(id, en, it, null, zh)
 
 private const val HIGHER = "Higher pitch"
 private const val LOWER = "Lower pitch"
@@ -70,7 +80,7 @@ val GLASSES_LANGUAGES: List<GlassesLanguage> = listOf(
     GlassesLanguage("hi_IN", "hi_in", listOf(v("hi_IN.5", "Medium-low, deep", "Tono medio-basso, profondo")), "hi_IN.5"),
     GlassesLanguage("ja_JP", "ja_jp", listOf(v("ja_JP.0", "Medium-low, warm, narrative", "Tono medio-basso, caldo, narrativo"), v("ja_JP.1", "Medium", "Tono medio")), "ja_JP.0"),
     GlassesLanguage("ko_KR", "ko_kr", listOf(v("ko_KR.0", "Medium, soft, narrative", "Tono medio, morbido, narrativo"), v("ko_KR.1", "Low, deep", "Tono basso, profondo")), "ko_KR.0"),
-    GlassesLanguage("zh_CN", "zh_cn", listOf(v("zh_CN.0", "High, gentle", "Tono acuto, gentile"), v("zh_CN.1", "Low, deep", "Tono basso, profondo")), "zh_CN.0"),
+    GlassesLanguage("zh_CN", "zh_cn", listOf(v("zh_CN.0", "High, gentle", "Tono acuto, gentile", "音调高，柔和"), v("zh_CN.1", "Low, deep", "Tono basso, profondo", "音调低，深沉")), "zh_CN.0"),
 )
 
 /** The language a voice id belongs to: "it_IT.1" is it_IT; "3p_" voices are the same language's. */

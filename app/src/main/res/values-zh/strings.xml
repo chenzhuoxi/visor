@@ -932,4 +932,43 @@
     <string name="schedule_value_now">当前值 $now</string>
     <string name="wake_word_example_jarvis">Hey Jarvis</string>
     <string name="flags_more_results">还有 ${found.size - SHOWN} 项；请输入更多名称。</string>
+    <plurals name="home_new_captures">
+        <item quantity="other">%d 项新的照片或视频</item>
+    </plurals>
+    <plurals name="home_photos">
+        <item quantity="other">%d 张照片</item>
+    </plurals>
+    <plurals name="home_videos">
+        <item quantity="other">%d 个视频</item>
+    </plurals>
+    <plurals name="pill_new">
+        <item quantity="other">%d 项新增</item>
+    </plurals>
+    <plurals name="gallery_waiting">
+        <item quantity="other">眼镜上还有 %d 项</item>
+    </plurals>
+    <plurals name="gallery_selected">
+        <item quantity="other">已选择 %d 项</item>
+    </plurals>
+    <plurals name="gallery_deleted">
+        <item quantity="other">已删除 %d 项</item>
+    </plurals>
+    <plurals name="gallery_arriving">
+        <item quantity="other">%d 项正在传输</item>
+    </plurals>
+    <plurals name="import_done">
+        <item quantity="other">%d 张新照片或视频</item>
+    </plurals>
+    <plurals name="meta_ai_deleted">
+        <item quantity="other">已删除 %d 条对话</item>
+    </plurals>
+    <plurals name="meta_ai_questions">
+        <item quantity="other">%d 个问题</item>
+    </plurals>
+    <plurals name="mcp_connected">
+        <item quantity="other">已连接 %d 个</item>
+    </plurals>
+    <plurals name="mcp_tools">
+        <item quantity="other">%d 个工具</item>
+    </plurals>
 </resources>
