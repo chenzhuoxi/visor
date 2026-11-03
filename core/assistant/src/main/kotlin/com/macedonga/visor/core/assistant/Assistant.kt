@@ -968,24 +968,23 @@ class Assistant(
      * it. The milliseconds of audio sent, 0 in the glasses' voice.
      */
     private suspend fun deliver(l: Link, interaction: String, transcript: String, text: String, listen: Boolean = true, live: Boolean = false): Long {
-        // The glasses' own voice speaks only their own language.
-        // On a session turn Meta's session path is on and the glasses will not speak text the phone sends:
-        // the answer goes as the phone's own voice, streamed to the frames. That path is also the one that
-        // leaves the glasses' LED on after the answer, so the turn has to be closed with an ev60.
+        // The glasses' own voice speaks only their own language. It is tried first whatever the turn is: a
+        // phone whose text to speech engine will not start would otherwise lose the answer entirely, and the
+        // frames' own voice needs no engine on the phone at all. On a session turn the frames may end the
+        // session rather than the turn, which is better than saying nothing.
         if (store.config.value.glassesVoice && store.config.value.speechLanguage.isEmpty()) {
-            if (!l.sessionTurn) {
+            try {
                 speakOnGlasses(l, interaction, transcript, text, listen)
                 return 0
+            } catch (error: Exception) {
+                say("The glasses did not say it (${error.message}); the phone will instead")
             }
-            say("The glasses are on Meta's session path: the phone speaks the answer")
         }
         // The phone speaks it, but a phone without a text to speech engine cannot: fall back to the glasses'
-        // own voice rather than losing the answer. A session turn cannot: there the glasses' own voice would
-        // end the whole session.
+        // own voice rather than losing the answer.
         val packets = try {
             voice.speak(text, spoken(l))
         } catch (error: Exception) {
-            if (l.sessionTurn) throw error
             say("The phone could not speak the answer (${error.message}); the glasses will say it instead")
             speakOnGlasses(l, interaction, transcript, text, listen)
             return 0
@@ -1039,7 +1038,7 @@ class Assistant(
         val mono = System.nanoTime() / 1_000_000
         val e392 = ThriftWriter().str(1, "VoiceActionResponseMessage").i32(2, (mono and 0xFFFF).toInt()).i32(3, 1).done()
         l.mux.send(m0, netEvent(EV_KEEP_AIR_SESSION_ALIVE, e392), messageType = MT_NET_EVENT)
-        say(if (text.isEmpty()) "Ended the turn without a word: every tool did what was asked" else "Answered in the glasses' voice${voiceId?.let { " ($it)" }.orEmpty()}: \"$text\"")
+        say(if (text.isEmpty()) "Ended the turn without a word: every tool did what was asked" else "Answered in the glasses' voice${voiceId?.let { " ($it)" }.orEmpty()}${if (l.sessionTurn) " [session turn]" else ""}: \"$text\"")
     }
 
     /**

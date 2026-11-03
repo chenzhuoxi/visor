@@ -63,14 +63,28 @@ class Voice(private val context: Context) {
         val status = suspendCancellableCoroutine { cont ->
             made = TextToSpeech(context) { cont.resume(it) }
         }
-        val engine = checkNotNull(made)
+        var engine = checkNotNull(made)
         if (status != TextToSpeech.SUCCESS) {
             // Do not keep a failed engine: the wearer may install or enable one, and the next attempt
-            // should try again rather than reuse this broken one.
+            // should try again rather than reuse this broken one. The default engine can fail to come up
+            // while an engine the system can see still works, so each one named is tried in turn.
             engine.shutdown()
-            val names = runCatching { engine.getEngines().joinToString(", ") { it.label } }.getOrDefault("")
-            throw IllegalStateException(
-                "the phone has no working text to speech" + if (names.isEmpty()) "" else " (engines: $names)",
+            val names = runCatching { engine.getEngines().map { it.name } }.getOrDefault(emptyList())
+            var working: TextToSpeech? = null
+            for (name in names) {
+                var candidate: TextToSpeech? = null
+                val got = suspendCancellableCoroutine { cont ->
+                    candidate = TextToSpeech(context, { cont.resume(it) }, name)
+                }
+                val made2 = checkNotNull(candidate)
+                if (got == TextToSpeech.SUCCESS) {
+                    working = made2
+                    break
+                }
+                made2.shutdown()
+            }
+            engine = working ?: throw IllegalStateException(
+                "the phone has no working text to speech (tried: ${names.joinToString(", ").ifEmpty { "the default engine" }})",
             )
         }
         engine.setOnUtteranceProgressListener(
