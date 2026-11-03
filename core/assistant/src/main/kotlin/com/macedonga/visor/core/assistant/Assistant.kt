@@ -1061,12 +1061,18 @@ class Assistant(
         val m0 = checkNotNull(l.m0)
         preamble(l, interaction, transcript, text)
         _phase.value = AssistantPhase.SPEAKING
-        val voiceId = voice ?: glassesVoice()
+        // The voice the answer is spoken in, and the voice the frames' assistant runs in, are two different
+        // things and must stay decoupled: the frames pick the turn's kind from their own assistant_voice_id
+        // (English gives an ordinary turn, Chinese a session one), while the VARM names the voice the answer
+        // is spoken in. Turning the session path off is not enough — with a Chinese assistant_voice_id every
+        // turn is still a session one, and there the frames never speak text from the phone.
+        val voiceId = voice ?: ANSWER_VOICE
         val varm = varm(interaction, transcript, text, onGlasses = true, voiceId = voiceId)
         val answer = netEvent(EV_VOICE_ACTION_RESPONSE, varm)
         // The frames drop a net event they cannot take, and the log would otherwise show only that the
-        // answer went out. The size is what tells a dropped answer from a spoken one.
-        say("Voice: $text = ${varm.size} B (voice ${voiceId ?: "default"})")
+        // answer went out. The size is what tells a dropped answer from a spoken one. Both voices are named
+        // so a silent answer can be told apart from one the frames merely did not like.
+        say("Voice: $text = ${varm.size} B (voice ${voiceId ?: "default"}, assistant ${glassesVoice() ?: "default"})")
         // An answer that asks something has the glasses listen for the reply, without the wake word. Any other answer
         // offers a follow-up, as the VARM's own shouldSmartFollowUp does.
         val complete = netEvent(
@@ -1301,6 +1307,13 @@ class Assistant(
         const val OWN_RECOGNITION_GRACE_MS = 1_200L
         const val MIC_END_WAIT_MS = 10_000L
         const val SESSION_USE_CASE = 7L
+        /**
+         * The voice the VARM asks the frames to speak the answer in, whichever voice their own assistant runs in.
+         * The two are different on purpose: the frames choose the turn's kind from assistant_voice_id — English an
+         * ordinary turn, Chinese a session one — and only ordinary turns speak text from the phone at all. So the
+         * frames' assistant is left on an English voice for the turn's sake and the answer is spoken in Chinese.
+         */
+        const val ANSWER_VOICE = "zh_CN.0"
         const val REGISTER_AGAIN_MS = 2_500L
         val CHANNEL_CLOSED = Regex("service 15 answered status 0xc0(?:02|10) on channel 0x([0-9a-f]{4})")
         const val QUESTION_GRACE_MS = 3_000L
