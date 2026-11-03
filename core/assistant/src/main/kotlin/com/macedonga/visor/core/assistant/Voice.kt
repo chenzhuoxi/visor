@@ -63,13 +63,17 @@ class Voice(private val context: Context) {
         val status = suspendCancellableCoroutine { cont ->
             made = TextToSpeech(context) { cont.resume(it) }
         }
-        var engine = checkNotNull(made)
+        var ttsEngine = checkNotNull(made)
+        // The engine's own name, kept for the screen and the log: which one is speaking is what tells a
+        // working setup from one that is quietly using the wrong voice. Filled in below.
+        engine = ""
         if (status != TextToSpeech.SUCCESS) {
             // Do not keep a failed engine: the wearer may install or enable one, and the next attempt
             // should try again rather than reuse this broken one. The default engine can fail to come up
-            // while an engine the system can see still works, so each one named is tried in turn.
-            engine.shutdown()
-            val names = runCatching { engine.getEngines().map { it.name } }.getOrDefault(emptyList())
+            // while an engine the system can see still works, so each one named is tried in turn. The list
+            // is read before the shutdown: a shut-down engine will not be asked.
+            val names = runCatching { ttsEngine.getEngines().map { it.name } }.getOrDefault(emptyList())
+            ttsEngine.shutdown()
             var working: TextToSpeech? = null
             for (name in names) {
                 var candidate: TextToSpeech? = null
@@ -79,15 +83,16 @@ class Voice(private val context: Context) {
                 val made2 = checkNotNull(candidate)
                 if (got == TextToSpeech.SUCCESS) {
                     working = made2
+                    engine = name
                     break
                 }
                 made2.shutdown()
             }
-            engine = working ?: throw IllegalStateException(
+            ttsEngine = working ?: throw IllegalStateException(
                 "the phone has no working text to speech (tried: ${names.joinToString(", ").ifEmpty { "the default engine" }})",
             )
         }
-        engine.setOnUtteranceProgressListener(
+        ttsEngine.setOnUtteranceProgressListener(
             object : UtteranceProgressListener() {
                 override fun onStart(utteranceId: String) = Unit
                 override fun onDone(utteranceId: String) {
@@ -104,9 +109,9 @@ class Voice(private val context: Context) {
                 }
             },
         )
-        this.engine = engine.defaultEngine.orEmpty()
-        tts = engine
-        return engine
+        engine = engine.ifEmpty { ttsEngine.defaultEngine.orEmpty() }
+        tts = ttsEngine
+        return ttsEngine
     }
 
     fun close() {

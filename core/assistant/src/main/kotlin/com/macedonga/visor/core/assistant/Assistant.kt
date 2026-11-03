@@ -1008,25 +1008,16 @@ class Assistant(
      * it. The milliseconds of audio sent, 0 in the glasses' voice.
      */
     private suspend fun deliver(l: Link, interaction: String, transcript: String, text: String, listen: Boolean = true, live: Boolean = false): Long {
-        // The glasses' own voice speaks only their own language. It is tried first whatever the turn is: a
-        // phone whose text to speech engine will not start would otherwise lose the answer entirely, and the
-        // frames' own voice needs no engine on the phone at all. On a session turn the frames may end the
-        // session rather than the turn, which is better than saying nothing.
-        if (store.config.value.glassesVoice && store.config.value.speechLanguage.isEmpty()) {
-            try {
-                speakOnGlasses(l, interaction, transcript, text, listen)
-                return 0
-            } catch (error: Exception) {
-                say("The glasses did not say it (${error.message}); the phone will instead")
-            }
-        }
-        // The phone speaks it, but a phone without a text to speech engine cannot: fall back to the glasses'
-        // own voice rather than losing the answer.
+        // The phone speaks it, and on these frames it is the only path that makes a sound. Every turn is a
+        // session one ("5=7"), and there the glasses never speak text the phone sends — the frames' own
+        // voice is silent whatever is sent to it. Streaming the phone's own text to speech is what plays.
         val packets = try {
             voice.speak(text, spoken(l))
         } catch (error: Exception) {
-            say("The phone could not speak the answer (${error.message}); the glasses will say it instead")
-            speakOnGlasses(l, interaction, transcript, text, listen)
+            // No engine on the phone will start. The frames' own voice says nothing here, but sending it
+            // closes the turn so the LED goes off instead of the wearer being left waiting.
+            say("The phone could not speak it (${error.message}); the glasses will close the turn without a word")
+            speakOnGlasses(l, interaction, transcript, text, listen = listen)
             return 0
         }
         // A session turn ends on the VARM; there, and in Live AI, ev60 would end the whole session.
@@ -1156,7 +1147,7 @@ class Assistant(
             mux.send(m0, netEvent(event, body), messageType = MT_NET_EVENT)
             delay(20)
         }
-        say("Answered: \"$text\"")
+        say("Answered in the phone's voice (${voice.engine.ifEmpty { "unknown engine" }}): \"$text\"")
     }
 
     /** 5005: `<streamId>_<interactionId>_<pcmBytes>_<ms>`, 96 bytes of PCM per millisecond played. */
