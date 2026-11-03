@@ -99,9 +99,11 @@ fun keepAssistantConfig(
             // started: a turn still comes in as use case 7 and the glasses say nothing. Only a restart makes it
             // read the configuration again. So restart once per connection whenever answers are to be in the
             // glasses' own voice and the session path is already off, not just when the flag has just changed.
+            log.add("Own voice: classic path=$classic, restarted=$restartedThisLink, changes=${changes.keys.joinToString().ifEmpty { "none" }}")
             if (SESSION_PATH_FLAG !in changes && !(classic && !restartedThisLink)) return@collectLatest
             restartedThisLink = true
-            log.add(if (restartGlassesAssistant(settings)) "Own voice: restarting the glasses' assistant to apply it" else "Own voice: restart the glasses to apply it")
+            log.add("Own voice: restarting the glasses' assistant to read the configuration again")
+            log.add(if (restartGlassesAssistant(settings, log)) "Own voice: the glasses' assistant restarted" else "Own voice: the glasses would not restart their assistant; restart the glasses")
         }
     }
 }
@@ -110,17 +112,27 @@ fun keepAssistantConfig(
  * Restart only the glasses' assistant, which reads MobileConfig afresh when it starts. It exits on any change of
  * live_caption_voice_id, so that voice goes to another value and straight back.
  */
-suspend fun restartGlassesAssistant(settings: GlassesSettings): Boolean {
+suspend fun restartGlassesAssistant(settings: GlassesSettings, log: EventLog? = null): Boolean {
     // The value to put back must be the glasses' own, so read them first if this run has not.
     if (CAPTION_VOICE !in settings.state.value.stored) {
+        log?.add("Own voice: reading the glasses' settings to find $CAPTION_VOICE")
         settings.read()
-        withTimeoutOrNull(SETTINGS_MS) { settings.state.first { CAPTION_VOICE in it.stored } } ?: return false
+        if (withTimeoutOrNull(SETTINGS_MS) { settings.state.first { CAPTION_VOICE in it.stored } } == null) {
+            log?.add("Own voice: $CAPTION_VOICE did not arrive in ${SETTINGS_MS / 1000} s; cannot restart the assistant")
+            return false
+        }
     }
     val was = settings.state.value.stored[CAPTION_VOICE].orEmpty()
     val other = if (was == "en_US.mai_03") "en_US.mai_01" else "en_US.mai_03"
-    if (!settings.write(CAPTION_VOICE, other)) return false
+    log?.add("Own voice: flipping $CAPTION_VOICE ($was -> $other -> $was) to restart the assistant")
+    if (!settings.write(CAPTION_VOICE, other)) {
+        log?.add("Own voice: the glasses would not take $CAPTION_VOICE = $other")
+        return false
+    }
     delay(1_500)
-    return settings.write(CAPTION_VOICE, was)
+    val back = settings.write(CAPTION_VOICE, was)
+    log?.add("Own voice: $CAPTION_VOICE is back to ${if (back) was else "nothing: the glasses would not take it"}")
+    return back
 }
 
 private const val SETTLE_MS = 20_000L
