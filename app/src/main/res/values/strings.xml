@@ -514,7 +514,7 @@
     <string name="ai_try_asking">Asking…</string>
     <string name="ai_try_failed">It did not answer: %1$s</string>
     <string name="ai_tts_probe">Probe the frames\' own voice</string>
-    <string name="ai_tts_probe_sub">Ask the glasses six times; each answer is one string of the probe, from one character up. Say which of them you heard.</string>
+    <string name="ai_tts_probe_sub">Press it and the glasses say six strings on their own, one at a time, from one character up. Say which of them you heard.</string>
     <string name="ai_memories_sub">What the model chose to keep about you</string>
     <string name="ai_glasses_note">These are the glasses\' own switches for their assistant. Visor answers whatever they pass on.</string>
     <string name="ai_phase_off">Off. The glasses\' own assistant has no phone behind it.</string>

@@ -252,7 +252,7 @@ class Assistant(
     @Volatile
     private var link: Link? = null
 
-    /** Rungs of the frames' own text to speech probe, spoken one per turn while [probeAt] is set. */
+    /** Rungs of the frames' own text to speech probe. */
     private val ttsLadder = listOf(
         "一",
         "你好",
@@ -261,18 +261,40 @@ class Assistant(
         "你好，我在。想让我做什么？",
         "今天是二零二六年十一月三日，天气二十一度，多云。",
     )
-    private var probeAt = -1
 
-    /** Speak the next rung of the frames' text to speech probe on the next turn; the log gives its size. */
+    /**
+     * Speak a ladder of strings in the frames' own voice right away, one at a time, with each one's event
+     * size in the log. Each string opens its own turn, as the wake word would: waiting for the wearer to
+     * ask something first left the probe idle and silent.
+     */
     fun probeGlassesTts() {
-        probeAt = 0
-        say("Voice probe: ask the glasses ${ttsLadder.size} times; the log gives each one's size")
+        val l = link
+        if (l == null) {
+            say("Voice probe: the glasses are not connected")
+            return
+        }
+        scope.launch {
+            say("Voice probe: ${ttsLadder.size} strings in the frames' own voice, one at a time")
+            for ((at, rung) in ttsLadder.withIndex()) {
+                // The frames open turns, so there may be no id to answer to. Reuse the last one if there
+                // is one, else try a fresh id and let the log say whether the frames took it.
+                val interaction = l.lastInteraction.ifEmpty { UUID.randomUUID().toString() }
+                say("Voice probe ${at + 1}/${ttsLadder.size}: \"$rung\" (turn $interaction)")
+                runCatching { speakOnGlasses(l, interaction, "probe", rung, listen = true) }
+                    .onFailure { say("Voice probe ${at + 1} did not go out: ${it.message}") }
+                delay(4_500)
+            }
+            say("Voice probe: done")
+        }
     }
 
     /** svc15 state for one Bluetooth session. */
     private class Link(val mux: DataXConnection) {
         // Whether the current turn is a session (SCI) one, which only plays streamed answers.
         @Volatile var sessionTurn = false
+        // The id of the last turn the frames opened. A probe reuses it: the frames open turns, and an
+        // answer with an id they do not know is answered to nobody.
+        @Volatile var lastInteraction = ""
         // The interaction the microphone is open for, and each request's session when the two differ.
         @Volatile var listening: String? = null
         val sessionOf = java.util.concurrent.ConcurrentHashMap<String, String>()
@@ -556,6 +578,7 @@ class Assistant(
             else {
                 // Use case 7 opens a session ("SCI", English): there the glasses never speak text from the phone.
                 l.sessionTurn = fields[5] == SESSION_USE_CASE
+                l.lastInteraction = fields[1].asText()
                 say("Assistant: start interaction ${deep(fields)}")
             }
             return
@@ -985,19 +1008,6 @@ class Assistant(
      * it. The milliseconds of audio sent, 0 in the glasses' voice.
      */
     private suspend fun deliver(l: Link, interaction: String, transcript: String, text: String, listen: Boolean = true, live: Boolean = false): Long {
-        // The frames' own text to speech, probed one rung per turn. The size of each VARM is logged, so
-        // the wearer can say which of them they heard and the limit is read off the log.
-        if (probeAt >= 0 && !live) {
-            val rung = ttsLadder.getOrNull(probeAt)
-            if (rung != null) {
-                say("Voice probe ${probeAt + 1}/${ttsLadder.size}: \"$rung\"")
-                speakOnGlasses(l, interaction, transcript, rung, listen = true)
-                probeAt += 1
-                return 0
-            }
-            probeAt = -1
-            say("Voice probe: done")
-        }
         // The glasses' own voice speaks only their own language. It is tried first whatever the turn is: a
         // phone whose text to speech engine will not start would otherwise lose the answer entirely, and the
         // frames' own voice needs no engine on the phone at all. On a session turn the frames may end the
