@@ -45,6 +45,14 @@ class Voice(private val context: Context) {
         withContext(Dispatchers.Default) { encodeOpus(resample(pcm.samples, pcm.rate, 48_000)) }
     }
 
+    /**
+     * Already-synthesised audio to the same packets the phone's own engine produces. Nothing about
+     * the way to the glasses changes with who did the synthesising, so a cloud voice and the phone's
+     * are one branch apart in the caller rather than two delivery paths.
+     */
+    suspend fun encode(samples: ShortArray, rate: Int): List<OpusPacket> =
+        withContext(Dispatchers.Default) { encodeOpus(resample(samples, rate, 48_000)) }
+
     private suspend fun synthesize(text: String, locale: Locale, out: File) {
         val engine = ready()
         if (engine.isLanguageAvailable(locale) >= TextToSpeech.LANG_AVAILABLE) engine.language = locale
@@ -94,39 +102,8 @@ class Voice(private val context: Context) {
 
     private class Pcm(val samples: ShortArray, val rate: Int)
 
-    /** 16-bit PCM WAV, mixed down to mono. Some engines leave the data size unset, so it is clamped. */
-    private fun readWav(file: File): Pcm {
-        val bytes = file.readBytes()
-        val b = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-        check(bytes.size > 12 && String(bytes, 0, 4) == "RIFF" && String(bytes, 8, 4) == "WAVE") { "not a WAV file" }
-        var at = 12
-        var rate = 0
-        var channels = 1
-        var bits = 16
-        while (at + 8 <= bytes.size) {
-            val id = String(bytes, at, 4)
-            val size = b.getInt(at + 4)
-            val body = at + 8
-            if (id == "fmt ") {
-                channels = b.getShort(body + 2).toInt()
-                rate = b.getInt(body + 4)
-                bits = b.getShort(body + 14).toInt()
-            } else if (id == "data") {
-                check(bits == 16 && rate > 0) { "the speech is $bits-bit at $rate Hz" }
-                val end = if (size <= 0 || body + size > bytes.size) bytes.size else body + size
-                val frames = (end - body) / (2 * channels)
-                val out = ShortArray(frames)
-                for (i in 0 until frames) {
-                    var sum = 0
-                    for (c in 0 until channels) sum += b.getShort(body + (i * channels + c) * 2)
-                    out[i] = (sum / channels).toShort()
-                }
-                return Pcm(out, rate)
-            }
-            at = body + size + (size and 1)
-        }
-        error("the WAV has no data")
-    }
+    /** 16-bit PCM WAV, mixed down to mono. Shared with the cloud's own audio, which arrives as WAV too. */
+    private fun readWav(file: File): Pcm = wavToPcm(file.readBytes()).let { Pcm(it.samples, it.rate) }
 
     private fun resample(input: ShortArray, from: Int, to: Int): ShortArray {
         if (from == to) return input

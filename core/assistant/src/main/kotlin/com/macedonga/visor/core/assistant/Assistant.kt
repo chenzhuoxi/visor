@@ -968,15 +968,45 @@ class Assistant(
      * it. The milliseconds of audio sent, 0 in the glasses' voice.
      */
     private suspend fun deliver(l: Link, interaction: String, transcript: String, text: String, listen: Boolean = true, live: Boolean = false): Long {
-        // The glasses' own voice speaks only their own language.
-        if (store.config.value.glassesVoice && !l.sessionTurn && store.config.value.speechLanguage.isEmpty()) {
+        val c = store.config.value
+        // The frames' own voice is the only one that costs no phone battery, but it speaks the language
+        // their assistant runs in and cannot say Chinese at all — so it is a choice, not the default.
+        if (c.tts == TtsPath.GLASSES && !l.sessionTurn && c.speechLanguage.isEmpty()) {
             speakOnGlasses(l, interaction, transcript, text, listen)
             return 0
         }
-        val packets = voice.speak(text, spoken(l))
+        val packets = try {
+            synthesise(l, text)
+        } catch (error: Exception) {
+            // Nothing on the phone will speak either. The frames' own voice will not say the words,
+            // but sending it closes the turn so the LED goes off instead of the wearer waiting on it.
+            say("Nothing could speak it (${error.message}); the glasses will close the turn without a word")
+            speakOnGlasses(l, interaction, transcript, text, listen = listen)
+            return 0
+        }
         // A session turn ends on the VARM; there, and in Live AI, ev60 would end the whole session.
         stream(l, interaction, transcript, text, packets, complete = !l.sessionTurn && !live, listen = listen)
         return packets.sumOf { it.durationUs } / 1000
+    }
+
+    /**
+     * The answer as audio, in the order the wearer chose. A cloud service is asked first when it is
+     * the choice: it sounds better than any phone engine, and the answer needed the network anyway.
+     * A failure falls through to the phone's engine rather than leaving silence and a turn that never
+     * ends, and the phone's own failure is left for [deliver] to close the turn with.
+     */
+    private suspend fun synthesise(l: Link, text: String): List<OpusPacket> {
+        val c = store.config.value
+        if (c.tts == TtsPath.CLOUD) {
+            try {
+                val audio = cloudSpeech(c, text)
+                say("Speech: ${text.length} characters said by ${c.ttsModel.ifEmpty { "the speech service" }}")
+                return voice.encode(audio.samples, audio.rate)
+            } catch (error: Exception) {
+                say("The speech service did not answer (${error.message}); the phone will speak instead")
+            }
+        }
+        return voice.speak(text, spoken(l))
     }
 
     /** ev71, ev52 and ev342, which open every answer. ev52 and ev342 go at a tagged type 0, as the app sends them. */

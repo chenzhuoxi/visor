@@ -30,7 +30,20 @@ data class AssistantConfig(
     val memoryMinutes: Int = 10,
     // How long the glasses wait for an answer before they give up, written to them on connect.
     val answerWaitSeconds: Int = 45,
+    // Who synthesises the answer. The frames' own voice reads it in the language their assistant runs
+    // in and cannot say Chinese at all; the phone's engine is offline and free; a cloud service is
+    // the best of the three and needs a network, which the answer needed anyway.
+    val tts: TtsPath = TtsPath.CLOUD,
+    // The cloud's endpoint and credentials, the same shape as the model's: any service that answers
+    // GET /models with a data array and accepts POST /audio/speech speaks it.
+    val ttsBaseUrl: String = "https://api.openai.com/v1",
+    val ttsApiKey: String = "",
+    val ttsModel: String = "",
+    val ttsVoice: String = "alloy",
 )
+
+/** Who says the answer out loud. */
+enum class TtsPath { GLASSES, PHONE, CLOUD }
 
 /** Languages the wearer can speak that the glasses have no pack for, heard and spoken by the phone (issue #38). */
 val SPEECH_LANGUAGES = listOf(
@@ -81,6 +94,11 @@ class AssistantConfigStore(context: Context) : FieldBook {
             .putString("instructions", next.instructions)
             .putInt("memory_minutes", next.memoryMinutes)
             .putInt("answer_wait_s", next.answerWaitSeconds)
+            .putString("tts", next.tts.name)
+            .putString("tts_base_url", next.ttsBaseUrl)
+            .putString("tts_api_key", next.ttsApiKey)
+            .putString("tts_model", next.ttsModel)
+            .putString("tts_voice", next.ttsVoice)
             .apply()
         _config.value = next
     }
@@ -102,6 +120,11 @@ class AssistantConfigStore(context: Context) : FieldBook {
             instructions = prefs.getString("instructions", d.instructions).orEmpty(),
             memoryMinutes = prefs.getInt("memory_minutes", d.memoryMinutes),
             answerWaitSeconds = prefs.getInt("answer_wait_s", d.answerWaitSeconds),
+            tts = runCatching { TtsPath.valueOf(prefs.getString("tts", null).orEmpty()) }.getOrDefault(d.tts),
+            ttsBaseUrl = prefs.getString("tts_base_url", d.ttsBaseUrl).orEmpty(),
+            ttsApiKey = prefs.getString("tts_api_key", d.ttsApiKey).orEmpty(),
+            ttsModel = prefs.getString("tts_model", d.ttsModel).orEmpty(),
+            ttsVoice = prefs.getString("tts_voice", d.ttsVoice).orEmpty(),
         )
     }
 

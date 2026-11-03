@@ -494,6 +494,13 @@
     <string name="ai_voice">Voice</string>
     <string name="ai_voice_glasses">The glasses\' own</string>
     <string name="ai_voice_phone">The phone\'s</string>
+    <string name="ai_voice_cloud">A cloud service</string>
+    <string name="ai_tts_model">Speech model</string>
+    <string name="ai_tts_model_sub">The service is asked for its models; or type one it does not list.</string>
+    <string name="ai_tts_voice">Voice name</string>
+    <string name="ai_tts_voice_sub">The voice the service speaks in, e.g. alloy.</string>
+    <string name="ai_tts_try">Hear it</string>
+    <string name="ai_tts_try_sub">Speaks one sentence so you hear the voice before you use it.</string>
     <string name="ai_glasses_voice">Glasses\' own voice</string>
     <string name="ai_glasses_voice_sub">Off, answers are spoken with the phone\'s voice.</string>
     <string name="ai_vision">Use the camera</string>
