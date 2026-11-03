@@ -252,6 +252,23 @@ class Assistant(
     @Volatile
     private var link: Link? = null
 
+    /** Rungs of the frames' own text to speech probe, spoken one per turn while [probeAt] is set. */
+    private val ttsLadder = listOf(
+        "一",
+        "你好",
+        "一二三四五",
+        "今天天气很好",
+        "你好，我在。想让我做什么？",
+        "今天是二零二六年十一月三日，天气二十一度，多云。",
+    )
+    private var probeAt = -1
+
+    /** Speak the next rung of the frames' text to speech probe on the next turn; the log gives its size. */
+    fun probeGlassesTts() {
+        probeAt = 0
+        say("Voice probe: ask the glasses ${ttsLadder.size} times; the log gives each one's size")
+    }
+
     /** svc15 state for one Bluetooth session. */
     private class Link(val mux: DataXConnection) {
         // Whether the current turn is a session (SCI) one, which only plays streamed answers.
@@ -968,6 +985,19 @@ class Assistant(
      * it. The milliseconds of audio sent, 0 in the glasses' voice.
      */
     private suspend fun deliver(l: Link, interaction: String, transcript: String, text: String, listen: Boolean = true, live: Boolean = false): Long {
+        // The frames' own text to speech, probed one rung per turn. The size of each VARM is logged, so
+        // the wearer can say which of them they heard and the limit is read off the log.
+        if (probeAt >= 0 && !live) {
+            val rung = ttsLadder.getOrNull(probeAt)
+            if (rung != null) {
+                say("Voice probe ${probeAt + 1}/${ttsLadder.size}: \"$rung\"")
+                speakOnGlasses(l, interaction, transcript, rung, listen = true)
+                probeAt += 1
+                return 0
+            }
+            probeAt = -1
+            say("Voice probe: done")
+        }
         // The glasses' own voice speaks only their own language. It is tried first whatever the turn is: a
         // phone whose text to speech engine will not start would otherwise lose the answer entirely, and the
         // frames' own voice needs no engine on the phone at all. On a session turn the frames may end the
@@ -1018,12 +1048,16 @@ class Assistant(
      * The answer in the glasses' own voice: a VARM that streams nothing, then ev60 with the text, which is what makes
      * them speak it with their own TTS.
      */
-    private suspend fun speakOnGlasses(l: Link, interaction: String, transcript: String, text: String, listen: Boolean = true) {
+    private suspend fun speakOnGlasses(l: Link, interaction: String, transcript: String, text: String, listen: Boolean = true, voice: String? = null) {
         val m0 = checkNotNull(l.m0)
         preamble(l, interaction, transcript, text)
         _phase.value = AssistantPhase.SPEAKING
-        val voiceId = glassesVoice()
-        val answer = netEvent(EV_VOICE_ACTION_RESPONSE, varm(interaction, transcript, text, onGlasses = true, voiceId = voiceId))
+        val voiceId = voice ?: glassesVoice()
+        val varm = varm(interaction, transcript, text, onGlasses = true, voiceId = voiceId)
+        val answer = netEvent(EV_VOICE_ACTION_RESPONSE, varm)
+        // The frames drop a net event they cannot take, and the log would otherwise show only that the
+        // answer went out. The size is what tells a dropped answer from a spoken one.
+        say("Voice: $text = ${varm.size} B (voice ${voiceId ?: "default"})")
         // An answer that asks something has the glasses listen for the reply, without the wake word. Any other answer
         // offers a follow-up, as the VARM's own shouldSmartFollowUp does.
         val complete = netEvent(

@@ -178,6 +178,14 @@ fun AssistantSettingsScreen(open: (NavKey) -> Unit, model: AssistantViewModel = 
                             busy = trying,
                         )
                     },
+                    {
+                        // The frames' own text to speech, one string per turn: what they actually say.
+                        RowFrame(
+                            stringResource(R.string.ai_tts_probe),
+                            onClick = { model.assistant.probeGlassesTts() },
+                            sub = stringResource(R.string.ai_tts_probe_sub),
+                        )
+                    },
                 )
             }
         }

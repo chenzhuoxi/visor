@@ -460,6 +460,8 @@
     <string name="ai_try">试一试</string>
     <string name="ai_try_asking">正在提问…</string>
     <string name="ai_try_failed">没有回应：%1$s</string>
+    <string name="ai_tts_probe">探测眼镜自带语音</string>
+    <string name="ai_tts_probe_sub">对眼镜说六次话；每次回答一条测试句，从一个字到长句。告诉我你听到了哪几条。</string>
     <string name="ai_memories_sub">模型选择保留的关于你的信息</string>
     <string name="ai_glasses_note">这些是眼镜自带助手的开关。Visor 会回答眼镜转交过来的任何内容。</string>
     <string name="ai_phase_off">已关闭。眼镜自带的助手将没有手机作为后端。</string>
