@@ -500,7 +500,7 @@
     <string name="ai_tts_voice">Voice name</string>
     <string name="ai_tts_voice_sub">The voice the service speaks in, e.g. alloy.</string>
     <string name="ai_tts_try">Hear it</string>
-    <string name="ai_tts_try_sub">Speaks one sentence so you hear the voice before you use it.</string>
+    <string name="ai_tts_try_sub">One fixed line, said on this phone. Only the voice is tested: no model is asked and the glasses are not needed.</string>
     <string name="ai_glasses_voice">Glasses\' own voice</string>
     <string name="ai_glasses_voice_sub">Off, answers are spoken with the phone\'s voice.</string>
     <string name="ai_vision">Use the camera</string>

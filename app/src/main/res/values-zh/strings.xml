@@ -447,7 +447,7 @@
     <string name="ai_tts_voice">音色</string>
     <string name="ai_tts_voice_sub">服务朗读用的音色，例如 alloy。</string>
     <string name="ai_tts_try">试听</string>
-    <string name="ai_tts_try_sub">朗读一句话，先听听音色再用。</string>
+    <string name="ai_tts_try_sub">在手机上朗读一句固定的话，只测语音本身：不调用模型，也不需要连眼镜。</string>
     <string name="ai_glasses_voice">眼镜自带语音</string>
     <string name="ai_glasses_voice_sub">关闭后，回答会用手机的声音朗读。</string>
     <string name="ai_vision">使用相机</string>

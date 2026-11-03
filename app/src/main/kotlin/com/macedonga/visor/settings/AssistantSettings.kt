@@ -50,11 +50,13 @@ import com.macedonga.visor.core.assistant.Provider
 import com.macedonga.visor.core.assistant.SPEECH_LANGUAGES
 import com.macedonga.visor.core.assistant.TtsPath
 import com.macedonga.visor.core.assistant.listModels
+import com.macedonga.visor.core.assistant.previewSpeech
 import com.macedonga.visor.core.assistant.mcp.McpHub
 import com.macedonga.visor.core.design.Visor
 import com.macedonga.visor.core.settings.GlassesSettings
 import com.macedonga.visor.ui.VisorIcons
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -66,7 +68,18 @@ class AssistantViewModel @Inject constructor(
     val toggles: VisorToggles,
     val settings: GlassesSettings,
     val hub: McpHub,
-) : ViewModel()
+    @ApplicationContext private val context: Context,
+) : ViewModel() {
+
+    /**
+     * Say one fixed line with the voice that was chosen, on this phone, and say what happened if it
+     * did not. No model is asked and no glasses are needed — see [previewSpeech] for why.
+     */
+    suspend fun previewTts(): String = runCatching {
+        previewSpeech(store.config.value, context)
+        ""
+    }.getOrElse { it.message ?: it.javaClass.simpleName }
+}
 
 /** What came of asking the provider for its models, which is also the test of the key. */
 private sealed interface KeyCheck {
@@ -246,22 +259,23 @@ fun AssistantSettingsScreen(open: (NavKey) -> Unit, model: AssistantViewModel = 
                             onClick = { sheet = "ttsvoice" }, sub = stringResource(R.string.ai_tts_voice_sub),
                         )
                     } else null,
-                    if (config.tts == TtsPath.CLOUD) row {
+                    {
+                        // Tests the voice and nothing else: one fixed line, synthesised by whatever is
+                        // chosen, said on this phone. No model is asked and no glasses are needed.
                         RowFrame(
                             stringResource(R.string.ai_tts_try),
                             onClick = if (!trying) ({
                                 trial = ""
                                 trying = true
                                 scope.launch {
-                                    trial = runCatching { model.assistant.ask("Say hello in one short sentence.") }
-                                        .getOrElse { context.getString(R.string.ai_try_failed, it.message ?: "") }
+                                    trial = model.previewTts()
                                     trying = false
                                 }
                             }) else null,
                             sub = trial.ifEmpty { stringResource(R.string.ai_tts_try_sub) },
                             busy = trying,
                         )
-                    } else null,
+                    },
                     {
                         ValueRow(
                             stringResource(R.string.ai_speech_language),
