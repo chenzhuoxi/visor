@@ -445,7 +445,7 @@
     <string name="ai_tts_model">语音模型</string>
     <string name="ai_tts_model_sub">向服务查询可用模型；也可以直接填未列出的模型 ID。</string>
     <string name="ai_tts_voice">音色</string>
-    <string name="ai_tts_voice_sub">服务朗读用的音色，例如 alloy。</string>
+    <string name="ai_tts_voice_sub">朗读用的音色。各家名字不同：OpenAI 是 alloy、echo 等；MiMo 是 mimo_default、冰糖、茉莉等。留空则用服务的默认音色。</string>
     <string name="ai_tts_try">试听</string>
     <string name="ai_tts_try_sub">在手机上朗读一句固定的话，只测语音本身：不调用模型，也不需要连眼镜。</string>
     <string name="ai_glasses_voice">眼镜自带语音</string>

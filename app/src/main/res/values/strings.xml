@@ -498,7 +498,7 @@
     <string name="ai_tts_model">Speech model</string>
     <string name="ai_tts_model_sub">The service is asked for its models; or type one it does not list.</string>
     <string name="ai_tts_voice">Voice name</string>
-    <string name="ai_tts_voice_sub">The voice the service speaks in, e.g. alloy.</string>
+    <string name="ai_tts_voice_sub">The voice to read with. Each service names its own: OpenAI uses alloy, echo and so on; MiMo uses mimo_default, 冰糖, 茉莉. Leave blank to let the service pick.</string>
     <string name="ai_tts_try">Hear it</string>
     <string name="ai_tts_try_sub">One fixed line, said on this phone. Only the voice is tested: no model is asked and the glasses are not needed.</string>
     <string name="ai_glasses_voice">Glasses\' own voice</string>
