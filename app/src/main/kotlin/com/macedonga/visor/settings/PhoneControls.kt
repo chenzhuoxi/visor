@@ -1,5 +1,7 @@
 package com.macedonga.visor.settings
 
+import androidx.compose.ui.res.stringResource
+import com.macedonga.visor.R
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -51,9 +53,9 @@ internal fun LocaleControl(value: String?, enabled: Boolean, labels: @Composable
     }
     val phone = localeValue(Locale.getDefault())
     PickerRow(
-        title = "Language",
+        title = stringResource(R.string.phone_control_language),
         current = value?.trim(),
-        shown = value?.trim()?.takeIf { it.isNotEmpty() }?.let { localeOf(it).displayName } ?: "Not set",
+        shown = value?.trim()?.takeIf { it.isNotEmpty() }?.let { localeOf(it).displayName } ?: stringResource(R.string.phone_control_not_set),
         options = listOf(Control.Option(phone, "This phone: ${Locale.getDefault().displayName}")) + options,
         searchable = true,
         enabled = enabled,
@@ -67,9 +69,9 @@ internal fun AppControl(c: Control.App, value: String?, enabled: Boolean, labels
     val context = LocalContext.current
     val apps = remember(c.role) { installedApps(context, c.role) }
     val current = value?.trim()
-    val label = c.extra.firstOrNull { it.value == current }?.label ?: apps.firstOrNull { it.value == current }?.label ?: current?.ifEmpty { null } ?: "Not set"
+    val label = c.extra.firstOrNull { it.value == current }?.label ?: apps.firstOrNull { it.value == current }?.label ?: current?.ifEmpty { null } ?: stringResource(R.string.phone_control_not_set)
     PickerRow(
-        title = if (c.role == "sms") "Messages app" else "Media app",
+        title = if (c.role == "sms") stringResource(R.string.phone_control_messages_app) else stringResource(R.string.phone_control_media_app),
         current = current,
         shown = label,
         options = c.extra + apps,
@@ -111,7 +113,7 @@ internal fun PhoneListControl(c: Control.PhoneList, value: String?, enabled: Boo
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                 modifier = Modifier.weight(1f),
             )
-            TextButton(enabled = enabled, onClick = { numbers = numbers.filterIndexed { j, _ -> j != i } }) { Text("Remove") }
+            TextButton(enabled = enabled, onClick = { numbers = numbers.filterIndexed { j, _ -> j != i } }) { Text(stringResource(R.string.phone_control_remove)) }
         }
     }
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -145,7 +147,7 @@ private fun PickerRow(
         title = { Text(title) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                if (searchable) OutlinedTextField(query, { query = it }, placeholder = { Text("Search") }, singleLine = true, modifier = Modifier.fillMaxWidth())
+                if (searchable) OutlinedTextField(query, { query = it }, placeholder = { Text(stringResource(R.string.phone_control_search)) }, singleLine = true, modifier = Modifier.fillMaxWidth())
                 val needle = query.trim().lowercase()
                 LazyColumn(Modifier.heightIn(max = 420.dp)) {
                     items(options.filter { needle.isEmpty() || needle in it.label.lowercase() || needle in it.value.lowercase() }, key = { it.value + it.label }) { o ->

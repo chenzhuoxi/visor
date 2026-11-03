@@ -1,5 +1,6 @@
 package com.macedonga.visor.settings
 
+import com.macedonga.visor.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -32,6 +33,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -86,7 +88,7 @@ internal fun BitsControl(spec: SettingSpec, c: Control.Bits, value: String?, ena
                 }
             }
         }
-        Line("Stored as $bits.", secondary = true)
+        Line(stringResource(R.string.schedule_stored_as), secondary = true)
     }
 }
 
@@ -154,9 +156,9 @@ internal fun ScheduleControl(spec: SettingSpec, settings: GlassesSettings, value
         open = false
         write(if (cal.profiles.isEmpty()) "" else cal.toJson())
     }) {
-        Line("Profiles set switches and numbers on the glasses. Outside every window the default profile applies.", secondary = true)
-        if (!valid) Line("Every profile needs a different name, and the default and every window must use one of them.")
-        Section("Profiles")
+        Line(stringResource(R.string.schedule_profiles_intro), secondary = true)
+        if (!valid) Line(stringResource(R.string.schedule_profile_names_hint))
+        Section(stringResource(R.string.schedule_section_profiles))
         cal.profiles.forEachIndexed { i, p ->
             Box {
                 OutlinedTextField(p.name, { n ->
@@ -178,23 +180,23 @@ internal fun ScheduleControl(spec: SettingSpec, settings: GlassesSettings, value
                     SettingPicker(settings, enabled) { key, type ->
                         cal = cal.copy(profiles = cal.profiles.mapIndexed { j, q -> if (j == i) q.copy(settings = q.settings + ProfileSetting(key, type, 0)) else q })
                     }
-                    TextButton(enabled = enabled, onClick = { cal = cal.copy(profiles = cal.profiles.filterIndexed { j, _ -> j != i }) }) { Text("Remove profile") }
+                    TextButton(enabled = enabled, onClick = { cal = cal.copy(profiles = cal.profiles.filterIndexed { j, _ -> j != i }) }) { Text(stringResource(R.string.schedule_remove_profile)) }
                 }
             }
         }
         if (enabled) OutlinedButton(onClick = {
             val name = "Profile ${cal.profiles.size + 1}"
             cal = cal.copy(profiles = cal.profiles + Profile(name, emptyList()), default = cal.default.ifEmpty { name })
-        }) { Text("Add a profile") }
+        }) { Text(stringResource(R.string.schedule_add_profile)) }
 
         if (names.isNotEmpty()) {
-            Section("Default profile")
+            Section(stringResource(R.string.schedule_default_profile))
             FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 for (n in names) FilterChip(selected = cal.default == n, enabled = enabled, onClick = { cal = cal.copy(default = n) }, label = { Text(n) })
             }
         }
 
-        Section("Weekly windows")
+        Section(stringResource(R.string.schedule_section_windows))
         cal.schedule.forEachIndexed { i, w ->
             Box {
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -207,16 +209,16 @@ internal fun ScheduleControl(spec: SettingSpec, settings: GlassesSettings, value
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     for (n in names) FilterChip(selected = w.profile == n, enabled = enabled, onClick = { cal = cal.withWindow(i, w.copy(profile = n)) }, label = { Text(n) })
                 }
-                TextButton(enabled = enabled, onClick = { cal = cal.copy(schedule = cal.schedule.filterIndexed { j, _ -> j != i }) }) { Text("Remove window") }
+                TextButton(enabled = enabled, onClick = { cal = cal.copy(schedule = cal.schedule.filterIndexed { j, _ -> j != i }) }) { Text(stringResource(R.string.schedule_remove_window)) }
             }
         }
         if (enabled && names.isNotEmpty()) OutlinedButton(onClick = {
             cal = cal.copy(schedule = cal.schedule + Window("mon", "09:00", "17:00", cal.default.ifEmpty { names.first() }))
-        }) { Text("Add a window") }
+        }) { Text(stringResource(R.string.schedule_add_window)) }
 
-        Section("Format")
+        Section(stringResource(R.string.schedule_format))
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text("Calendar version", style = Visor.type.body, color = Visor.colors.textPrimary, modifier = Modifier.weight(1f))
+            Text(stringResource(R.string.schedule_calendar_version), style = Visor.type.body, color = Visor.colors.textPrimary, modifier = Modifier.weight(1f))
             OutlinedTextField(
                 cal.version.toString(),
                 { t -> t.filter { it.isDigit() }.toLongOrNull()?.let { cal = cal.copy(version = it) } },
@@ -259,7 +261,7 @@ private fun ProfileSettingRow(settings: GlassesSettings, s: ProfileSetting, enab
 @Composable
 private fun SettingPicker(settings: GlassesSettings, enabled: Boolean, onPick: (String, String) -> Unit) {
     var picking by remember { mutableStateOf(false) }
-    OutlinedButton(enabled = enabled, onClick = { picking = true }) { Text("Add a setting") }
+    OutlinedButton(enabled = enabled, onClick = { picking = true }) { Text(stringResource(R.string.schedule_add_setting)) }
     if (!picking) return
     var query by remember { mutableStateOf("") }
     val choices = remember {
@@ -269,10 +271,10 @@ private fun SettingPicker(settings: GlassesSettings, enabled: Boolean, onPick: (
     }
     AlertDialog(
         onDismissRequest = { picking = false },
-        title = { Text("Setting") },
+        title = { Text(stringResource(R.string.schedule_setting)) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(query, { query = it }, placeholder = { Text("Search") }, singleLine = true, modifier = Modifier.fillMaxWidth())
+                OutlinedTextField(query, { query = it }, placeholder = { Text(stringResource(R.string.phone_control_search)) }, singleLine = true, modifier = Modifier.fillMaxWidth())
                 val needle = query.trim().lowercase()
                 LazyColumn(Modifier.heightIn(max = 420.dp)) {
                     items(choices.filter { needle.isEmpty() || needle in it.second.lowercase() || needle.replace(' ', '_') in it.first }, key = { it.first }) { (key, label, type) ->
@@ -310,7 +312,7 @@ private fun TimeButton(label: String, time: String, enabled: Boolean, onSet: (St
                 onSet("%02d:%02d".format(state.hour, state.minute))
             }) { Text("Set") }
         },
-        dismissButton = { TextButton(onClick = { picking = false }) { Text("Cancel") } },
+        dismissButton = { TextButton(onClick = { picking = false }) { Text(stringResource(R.string.schedule_cancel)) } },
     )
 }
 
@@ -341,8 +343,8 @@ internal fun FullDialog(title: String, onDismiss: () -> Unit, canSave: Boolean, 
             Text(title, style = Visor.type.title, color = Visor.colors.textPrimary, modifier = Modifier.asHeading())
             content()
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.padding(top = 12.dp)) {
-                OutlinedButton(onClick = onDismiss) { Text("Cancel") }
-                Button(enabled = canSave, onClick = onSave) { Text("Save to the glasses") }
+                OutlinedButton(onClick = onDismiss) { Text(stringResource(R.string.schedule_cancel)) }
+                Button(enabled = canSave, onClick = onSave) { Text(stringResource(R.string.schedule_save_to_glasses)) }
             }
         }
     }

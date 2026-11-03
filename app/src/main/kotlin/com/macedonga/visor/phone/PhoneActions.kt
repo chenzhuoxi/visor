@@ -79,7 +79,7 @@ class PhoneActions @Inject constructor(@ApplicationContext private val context: 
         val pkg = (if (app.isNotEmpty()) named(app, sessions) else chosen(sessions))
             ?: return PhoneDone("", if (app.isNotEmpty()) "there is no app called $app on the phone" else "no app was named and none played lately; ask which one")
         val label = label(pkg)
-        note("Playing \"$query\" in $label")
+        note(context.getString(R.string.phone_playing_in, query, label))
         // The step that did not play it, for the answer (#45).
         var gaveUp = ""
         // Its session when it has one; then its media browser service, which an app may refuse to an app it does not know.
@@ -135,7 +135,7 @@ class PhoneActions @Inject constructor(@ApplicationContext private val context: 
         // An app may take play and stay paused (one that plays only on screen): then it did not work.
         if (control == MediaControl.RESUME && withTimeoutOrNull(RESUME_WAIT_MS) { while (!c.playing()) delay(POLL_MS) } == null) {
             note("${c.packageName} took play and stayed ${c.playbackState?.state}")
-            return PhoneDone(label(c.packageName), "${label(c.packageName)} did not start playing")
+            return PhoneDone(label(c.packageName), context.getString(R.string.phone_did_not_start_playing, label(c.packageName)))
         }
         return PhoneDone(label(c.packageName))
     }

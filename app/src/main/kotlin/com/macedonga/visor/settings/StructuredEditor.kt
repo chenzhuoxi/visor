@@ -1,5 +1,6 @@
 package com.macedonga.visor.settings
 
+import com.macedonga.visor.R
 import android.util.Base64
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -25,6 +26,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -116,8 +118,8 @@ private fun StructuredDialog(
             Text(title, style = Visor.type.title, color = Visor.colors.textPrimary, modifier = Modifier.asHeading())
             MessageEditor(schema, schema.root, fields, editable) { fields = it }
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.padding(top = 12.dp)) {
-                OutlinedButton(onClick = onDismiss) { Text(if (editable) "Cancel" else "Close") }
-                if (editable) Button(enabled = fields !== start, onClick = { onSave(fields) }) { Text("Save to the glasses") }
+                OutlinedButton(onClick = onDismiss) { Text(if (editable) stringResource(R.string.schedule_cancel) else "Close") }
+                if (editable) Button(enabled = fields !== start, onClick = { onSave(fields) }) { Text(stringResource(R.string.schedule_save_to_glasses)) }
             }
         }
     }
@@ -136,13 +138,13 @@ private fun MessageEditor(schema: ProtoSchema, type: String, fields: List<ProtoF
                     EntryCard {
                         val child = parseProto(item.bytes)
                         if (child == null) {
-                            Line("This entry cannot be read; it is kept as it is.", secondary = true)
+                            Line(stringResource(R.string.schedule_entry_unreadable), secondary = true)
                         } else {
                             MessageEditor(schema, f.ref.orEmpty(), child, editable) { updated ->
                                 onChange(replaceNth(fields, f.number, i, ProtoField(f.number, 2, bytes = encodeProto(updated))))
                             }
                         }
-                        if (editable) TextButton(onClick = { onChange(removeNth(fields, f.number, i)) }) { Text("Remove") }
+                        if (editable) TextButton(onClick = { onChange(removeNth(fields, f.number, i)) }) { Text(stringResource(R.string.phone_control_remove)) }
                     }
                 }
                 if (present.isEmpty()) Line("None.", secondary = true)
@@ -184,7 +186,7 @@ private fun MessageEditor(schema: ProtoSchema, type: String, fields: List<ProtoF
                             label = { Text(o.label) },
                         )
                     }
-                    if (options.none { it.value == now }) FilterChip(selected = true, enabled = false, onClick = {}, label = { Text("Value $now") })
+                    if (options.none { it.value == now }) FilterChip(selected = true, enabled = false, onClick = {}, label = { Text(stringResource(R.string.schedule_value_now)) })
                 }
             }
 

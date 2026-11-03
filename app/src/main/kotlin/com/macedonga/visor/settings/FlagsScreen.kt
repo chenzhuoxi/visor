@@ -1,5 +1,6 @@
 package com.macedonga.visor.settings
 
+import com.macedonga.visor.R
 import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,6 +13,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -69,22 +71,21 @@ fun FlagsScreen(model: FlagsViewModel = hiltViewModel()) {
     val changes = pending.filter { (k, v) -> state.values[k] != v }
     fun value(name: String) = changes[name] ?: state.values[name]
 
-    PlainScreen("Feature flags") {
+    PlainScreen(stringResource(R.string.flags_title)) {
         Line(
-            "Meta's switches for features it turns on from its servers. Visor reads them from a bug report and writes them back " +
-                "the way the Meta app does. The glasses read most of them when they start: restart them after sending.",
+            stringResource(R.string.flags_intro),
             secondary = true,
         )
         Reading("Read", state.readAt?.let { AT.format(Instant.ofEpochMilli(it)) } ?: "never")
         if (state.busy.isNotEmpty()) Line(state.busy)
         if (state.note.isNotEmpty()) Line(state.note, secondary = true)
-        if (!ready) Line("Connect to the glasses to read or change these.", secondary = true)
-        OutlinedButton(enabled = idle, onClick = { model.config.read() }) { Text(if (state.params.isEmpty()) "Read from the glasses" else "Read again") }
+        if (!ready) Line(stringResource(R.string.flags_connect_first), secondary = true)
+        OutlinedButton(enabled = idle, onClick = { model.config.read() }) { Text(if (state.params.isEmpty()) stringResource(R.string.flags_read_from_glasses) else stringResource(R.string.flags_read_again)) }
         if (state.params.isEmpty()) return@PlainScreen
 
-        Section("Checked in the firmware")
+        Section(stringResource(R.string.flags_section_checked))
         Line(
-            "On/off switches whose effect was read in the glasses' firmware code. The others may work too: nobody has traced them yet.",
+            stringResource(R.string.flags_checked_intro),
             secondary = true,
         )
         val checked = model.notes.filterKeys { state.params[it]?.type == 1 }
@@ -98,33 +99,33 @@ fun FlagsScreen(model: FlagsViewModel = hiltViewModel()) {
             }
         }
 
-        Section("Every flag")
-        OutlinedTextField(query, { query = it }, placeholder = { Text("Search by name, e.g. live_ai") }, singleLine = true, modifier = Modifier.fillMaxWidth())
+        Section(stringResource(R.string.flags_section_every))
+        OutlinedTextField(query, { query = it }, placeholder = { Text(stringResource(R.string.flags_search_hint)) }, singleLine = true, modifier = Modifier.fillMaxWidth())
         val needle = query.trim().lowercase().replace(' ', '_')
         if (needle.length >= 2) {
             val found = state.params.values.filter { it.type == 1 && needle in it.name }.sortedBy { it.name }
-            if (found.isEmpty()) Line("Nothing matches.", secondary = true)
+            if (found.isEmpty()) Line(stringResource(R.string.flags_nothing_matches), secondary = true)
             for (p in found.take(SHOWN)) {
                 FlagRow(p.name.substringAfter('.'), model.notes[p.name]?.does ?: p.name.substringBefore('.'), checked = value(p.name) == true, enabled = true) { on ->
                     pending = pending + (p.name to on)
                 }
             }
-            if (found.size > SHOWN) Line("${found.size - SHOWN} more; type more of the name.", secondary = true)
+            if (found.size > SHOWN) Line(stringResource(R.string.flags_more_results), secondary = true)
         }
 
         if (changes.isNotEmpty()) {
-            Section("To send")
+            Section(stringResource(R.string.flags_section_to_send))
             for ((k, v) in changes) Line("$k → $v", secondary = true)
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Button(enabled = idle, onClick = { model.config.apply(changes) }) { Text("Send to the glasses") }
-                OutlinedButton(onClick = { pending = emptyMap() }) { Text("Discard") }
+                Button(enabled = idle, onClick = { model.config.apply(changes) }) { Text(stringResource(R.string.flags_send_to_glasses)) }
+                OutlinedButton(onClick = { pending = emptyMap() }) { Text(stringResource(R.string.flags_discard)) }
             }
         }
 
         state.baseline?.let {
-            Section("Way back")
-            Line("Visor kept the values the glasses had before its first change.", secondary = true)
-            OutlinedButton(enabled = idle, onClick = { pending = emptyMap(); model.config.restore() }) { Text("Restore the original values") }
+            Section(stringResource(R.string.flags_section_way_back))
+            Line(stringResource(R.string.flags_kept_values), secondary = true)
+            OutlinedButton(enabled = idle, onClick = { pending = emptyMap(); model.config.restore() }) { Text(stringResource(R.string.flags_restore_original)) }
         }
     }
 }

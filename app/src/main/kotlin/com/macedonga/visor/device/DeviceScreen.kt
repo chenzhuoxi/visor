@@ -1,5 +1,7 @@
 package com.macedonga.visor.device
 
+import com.macedonga.visor.R
+import com.macedonga.visor.ui.temperatureWords
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
@@ -35,7 +37,6 @@ import com.macedonga.visor.ui.Line
 import com.macedonga.visor.ui.PlainScreen
 import com.macedonga.visor.ui.Reading
 import com.macedonga.visor.ui.Section
-import com.macedonga.visor.ui.temperatureWords
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -92,27 +93,27 @@ fun DeviceScreen(
 
     PlainScreen("Visor") {
         if (!allowed) {
-            Line("The app needs permission to use Bluetooth before it can reach the glasses.")
-            Button(onClick = { ask.launch(wantedPermissions()) }) { Text("Allow") }
+            Line(stringResource(R.string.device_need_bluetooth_permission))
+            Button(onClick = { ask.launch(wantedPermissions()) }) { Text(stringResource(R.string.device_allow)) }
         }
         if (allowed && !contactsAllowed) {
-            Line("With your contacts, the glasses can say who a message is from.")
-            Button(onClick = { ask.launch(arrayOf(Manifest.permission.READ_CONTACTS)) }) { Text("Share contacts") }
+            Line(stringResource(R.string.device_contacts_hint))
+            Button(onClick = { ask.launch(arrayOf(Manifest.permission.READ_CONTACTS)) }) { Text(stringResource(R.string.device_share_contacts)) }
         }
 
-        Section("Connection")
+        Section(stringResource(R.string.device_section_connection))
         Line(stringResource(connectionWords(state, hasBluetoothPermission = allowed)))
-        Reading("Glasses", state.target?.let { "${it.serial}, ${it.link.describe()}" } ?: "none")
-        Reading("Stage", state.link.words())
-        if (state.reason.isNotBlank()) Reading("Reason", state.reason)
-        state.failure?.let { Reading("Connect failure", it.words()) }
-        Reading("Verdict", state.diagnosis?.words() ?: "not reached yet")
+        Reading(stringResource(R.string.device_reading_glasses), state.target?.let { "${it.serial}, ${it.link.describe()}" } ?: "none")
+        Reading(stringResource(R.string.device_reading_stage), state.link.words())
+        if (state.reason.isNotBlank()) Reading(stringResource(R.string.device_reading_reason), state.reason)
+        state.failure?.let { Reading(stringResource(R.string.device_reading_connect_failure), it.words()) }
+        Reading(stringResource(R.string.device_reading_verdict), state.diagnosis?.words() ?: stringResource(R.string.device_not_reached_yet))
         if (running) {
-            OutlinedButton(onClick = { GlassesService.stop(context) }) { Text("Disconnect") }
+            OutlinedButton(onClick = { GlassesService.stop(context) }) { Text(stringResource(R.string.device_disconnect)) }
         }
 
-        Section("Glasses on this phone")
-        if (glasses.isEmpty()) Line("No glasses set up on this phone.", secondary = true)
+        Section(stringResource(R.string.device_section_glasses_on_phone))
+        if (glasses.isEmpty()) Line(stringResource(R.string.device_no_glasses_on_phone), secondary = true)
         for (bundle in glasses) {
             Line("${bundle.serial}, ${bundle.glassesAddress}, ${bundle.state}")
             Button(
@@ -123,18 +124,18 @@ fun DeviceScreen(
                         GlassesTarget(GlassesLink.Bluetooth(bundle.glassesAddress), bundle.serial),
                     )
                 },
-            ) { Text("Connect to ${bundle.serial}") }
+            ) { Text(stringResource(R.string.device_connect_to)) }
         }
-        Button(onClick = onSetUp) { Text("Set up glasses") }
-        Button(onClick = onMedia) { Text("Media") }
-        Button(onClick = onLive) { Text("Live view") }
+        Button(onClick = onSetUp) { Text(stringResource(R.string.device_set_up_glasses)) }
+        Button(onClick = onMedia) { Text(stringResource(R.string.device_media)) }
+        Button(onClick = onLive) { Text(stringResource(R.string.device_live_view)) }
         Button(onClick = onMetaAi) { Text("Meta AI") }
-        Button(onClick = onSettings) { Text("Settings") }
-        OutlinedButton(onClick = onEventLog) { Text("Event log") }
+        Button(onClick = onSettings) { Text(stringResource(R.string.device_settings)) }
+        OutlinedButton(onClick = onEventLog) { Text(stringResource(R.string.device_event_log)) }
 
-        Section("Device status")
+        Section(stringResource(R.string.device_section_status))
         if (state.device == null && state.info == null) {
-            Line("Nothing yet. The glasses report this once the link is ready.", secondary = true)
+            Line(stringResource(R.string.device_status_nothing_yet), secondary = true)
         }
         state.device?.let { DeviceReadings(it) }
         state.info?.let { InfoReadings(it) }
@@ -143,8 +144,8 @@ fun DeviceScreen(
 
 @Composable
 private fun DeviceReadings(device: DeviceState) {
-    Reading("Battery", device.battery?.let { "${it.percent}%" + if (it.charging) ", charging" else "" })
-    Reading("Battery temperature", device.battery?.let { temperatureWords(it.temperatureC, decimals = 1) })
+    Reading(stringResource(R.string.device_reading_battery), device.battery?.let { "${it.percent}%" + if (it.charging) ", charging" else "" })
+    Reading(stringResource(R.string.device_reading_battery_temperature), device.battery?.let { temperatureWords(it.temperatureC, decimals = 1) })
     Reading(
         "Case",
         device.case?.let { case ->
@@ -156,9 +157,9 @@ private fun DeviceReadings(device: DeviceState) {
         },
     )
     Reading("Worn", device.worn?.let { if (it) "yes" else "no" })
-    Reading("Hinge", device.hinge?.lowercase())
+    Reading(stringResource(R.string.device_reading_hinge), device.hinge?.lowercase())
     Reading(
-        "Storage",
+        stringResource(R.string.device_reading_storage),
         device.storage?.let { "%.1f GB free of %.1f GB".format(it.freeMb / 1024.0, it.totalMb / 1024.0) },
     )
     Reading("Heat", device.thermal?.health?.lowercase())
@@ -166,9 +167,9 @@ private fun DeviceReadings(device: DeviceState) {
 
 @Composable
 private fun InfoReadings(info: DeviceInfo) {
-    Reading("Serial", info.serial)
-    Reading("Model", info.model.ifEmpty { null })
-    Reading("Build", info.build)
+    Reading(stringResource(R.string.device_reading_serial), info.serial)
+    Reading(stringResource(R.string.device_reading_model), info.model.ifEmpty { null })
+    Reading(stringResource(R.string.device_reading_build), info.build)
 }
 
 private fun GlassesLink.describe(): String = when (this) {
