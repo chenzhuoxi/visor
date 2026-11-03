@@ -1066,7 +1066,11 @@ class Assistant(
         // (English gives an ordinary turn, Chinese a session one), while the VARM names the voice the answer
         // is spoken in. Turning the session path off is not enough — with a Chinese assistant_voice_id every
         // turn is still a session one, and there the frames never speak text from the phone.
-        val voiceId = voice ?: ANSWER_VOICE
+        // The voice the answer is spoken in follows the wearer's choice among the Chinese voices, and falls
+        // back to one when the frames' assistant runs in a foreign voice (which the wearer only does for the
+        // turn's sake): an English voice reading Chinese text is silence.
+        val chosen = glassesVoice()
+        val voiceId = voice ?: chosen?.takeIf { it.startsWith("zh_") } ?: ANSWER_VOICE
         val varm = varm(interaction, transcript, text, onGlasses = true, voiceId = voiceId)
         val answer = netEvent(EV_VOICE_ACTION_RESPONSE, varm)
         // The frames drop a net event they cannot take, and the log would otherwise show only that the

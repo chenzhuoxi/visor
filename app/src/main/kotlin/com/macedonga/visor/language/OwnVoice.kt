@@ -19,6 +19,14 @@ import kotlinx.coroutines.withTimeoutOrNull
 /** Meta's switch for its session ("SCI") assistant path, on for English. There the glasses never speak Visor's text. */
 const val SESSION_PATH_FLAG = "wearables_ai_phone_call.session_centric_air_infra"
 
+/**
+ * The per-language switch for the classic path — the one that speaks text the phone sends. It is named once
+ * per language (`aipc_enable_en_gb`, `aipc_enable_it_it`, …) and the frames ship without a Chinese one, so
+ * Chinese lands on the session path whatever SESSION_PATH_FLAG says and the glasses never speak the answer.
+ * Writing it gives Chinese what English and Italian already have.
+ */
+const val AIPC_LOCALE_FLAG = "wearables_ai_phone_call.aipc_enable_zh_cn"
+
 /** How long the glasses wait for an answer before they speak their own error; 20 s from the factory. */
 const val PROCESSING_TIMEOUT = "assistant_on_sn.default_processing_timeout_s"
 
@@ -73,6 +81,9 @@ fun keepAssistantConfig(
                 // true, as 1 or as "true". Only an exact Boolean true was matched before, so a numeric or
                 // string value left Meta's session path on and the glasses never spoke the answer.
                 if (own && SESSION_PATH_FLAG in state.params && state.values[SESSION_PATH_FLAG].asBoolean()) put(SESSION_PATH_FLAG, false)
+                // The classic path is switched on per language. Chinese has no such switch in the frames'
+                // configuration — only the session one — so ask for it the way the app asks for the rest.
+                if (own && state.values[AIPC_LOCALE_FLAG].asBoolean().not()) put(AIPC_LOCALE_FLAG, true)
             }
             // The classic path is what speaks Visor's text in every language. It is taken when the flag is
             // off — but only once the frames' assistant has read that, and it reads the configuration when it
@@ -85,10 +96,16 @@ fun keepAssistantConfig(
                         else if (state.values[SESSION_PATH_FLAG].asBoolean()) "on, so the glasses speak answers themselves"
                         else "off, so the glasses speak answers in every language",
                 )
+                log.add(
+                    "Own voice: the classic path for Chinese is " +
+                        if (state.values[AIPC_LOCALE_FLAG].asBoolean()) "already on (aipc_enable_zh_cn)"
+                        else "not on yet (no aipc_enable_zh_cn in the glasses' configuration)",
+                )
             }
             if (changes.isNotEmpty()) {
                 if (PROCESSING_TIMEOUT in changes) log.add("Assistant: letting the glasses wait $wait s for an answer, not ${state.values[PROCESSING_TIMEOUT]}")
                 if (SESSION_PATH_FLAG in changes) log.add("Own voice: turning Meta's session path off, so the glasses speak answers in every language")
+                if (AIPC_LOCALE_FLAG in changes) log.add("Own voice: turning on the classic path for Chinese (aipc_enable_zh_cn), so the glasses speak answers like English and Italian")
                 config.apply(changes)
                 val written = withTimeoutOrNull(WRITE_MS) {
                     config.state.first { s -> s.busy.isEmpty() && changes.all { (key, value) -> s.values[key] == value } }
@@ -100,7 +117,9 @@ fun keepAssistantConfig(
             // read the configuration again. So restart once per connection whenever answers are to be in the
             // glasses' own voice and the session path is already off, not just when the flag has just changed.
             log.add("Own voice: classic path=$classic, restarted=$restartedThisLink, changes=${changes.keys.joinToString().ifEmpty { "none" }}")
-            if (SESSION_PATH_FLAG !in changes && !(classic && !restartedThisLink)) return@collectLatest
+            // A change of either switch has to reach the frames' assistant, which reads the configuration when
+            // it starts and not before.
+            if (SESSION_PATH_FLAG !in changes && AIPC_LOCALE_FLAG !in changes && !(classic && !restartedThisLink)) return@collectLatest
             restartedThisLink = true
             log.add("Own voice: restarting the glasses' assistant to read the configuration again")
             log.add(if (restartGlassesAssistant(settings, log)) "Own voice: the glasses' assistant restarted" else "Own voice: the glasses would not restart their assistant; restart the glasses")
