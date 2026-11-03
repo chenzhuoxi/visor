@@ -54,12 +54,26 @@ fun keepAssistantConfig(
                     .first { it }
                 log.add("Assistant: reading the glasses' configuration once")
                 config.read()
-                withTimeoutOrNull(READ_MS) { config.state.first { it.params.isNotEmpty() } } ?: return@collectLatest
+                if (withTimeoutOrNull(READ_MS) { config.state.first { it.params.isNotEmpty() } } == null) {
+                    log.add("Assistant: the glasses' configuration did not arrive in ${READ_MS / 60_000} min; the session path stays as it is")
+                    return@collectLatest
+                }
             }
             val state = config.state.first { it.busy.isEmpty() }
             val changes = buildMap<String, Any> {
                 if (enabled && PROCESSING_TIMEOUT in state.params && (state.values[PROCESSING_TIMEOUT] as? Number)?.toLong() != wait) put(PROCESSING_TIMEOUT, wait)
-                if (own && SESSION_PATH_FLAG in state.params && state.values[SESSION_PATH_FLAG] == true) put(SESSION_PATH_FLAG, false)
+                // The flag's value comes from the glasses' own configuration, where a boolean can arrive as
+                // true, as 1 or as "true". Only an exact Boolean true was matched before, so a numeric or
+                // string value left Meta's session path on and the glasses never spoke the answer.
+                if (own && SESSION_PATH_FLAG in state.params && state.values[SESSION_PATH_FLAG].asBoolean()) put(SESSION_PATH_FLAG, false)
+            }
+            if (own) {
+                log.add(
+                    "Own voice: Meta's session path is " +
+                        if (SESSION_PATH_FLAG !in state.params) "not in the glasses' configuration"
+                        else if (state.values[SESSION_PATH_FLAG].asBoolean()) "on, so the glasses speak answers themselves"
+                        else "off, so the glasses speak answers in every language",
+                )
             }
             if (changes.isEmpty()) return@collectLatest
             if (PROCESSING_TIMEOUT in changes) log.add("Assistant: letting the glasses wait $wait s for an answer, not ${state.values[PROCESSING_TIMEOUT]}")
@@ -96,3 +110,12 @@ private const val SETTLE_MS = 20_000L
 private const val READ_MS = 5 * 60_000L
 private const val WRITE_MS = 2 * 60_000L
 private const val SETTINGS_MS = 20_000L
+
+/** A configuration value that means true: a boolean, a number other than zero, or the word. */
+private fun Any?.asBoolean(): Boolean = when (this) {
+    true -> true
+    is Boolean -> this
+    is Number -> toLong() != 0L
+    is String -> equals("true", ignoreCase = true) || toLongOrNull()?.let { it != 0L } == true
+    else -> false
+}

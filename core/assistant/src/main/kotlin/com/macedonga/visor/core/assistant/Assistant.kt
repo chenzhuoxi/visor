@@ -969,9 +969,15 @@ class Assistant(
      */
     private suspend fun deliver(l: Link, interaction: String, transcript: String, text: String, listen: Boolean = true, live: Boolean = false): Long {
         // The glasses' own voice speaks only their own language.
-        if (store.config.value.glassesVoice && !l.sessionTurn && store.config.value.speechLanguage.isEmpty()) {
-            speakOnGlasses(l, interaction, transcript, text, listen)
-            return 0
+        // On a session turn Meta's session path is on and the glasses will not speak text the phone sends:
+        // the answer goes as the phone's own voice, streamed to the frames. That path is also the one that
+        // leaves the glasses' LED on after the answer, so the turn has to be closed with an ev60.
+        if (store.config.value.glassesVoice && store.config.value.speechLanguage.isEmpty()) {
+            if (!l.sessionTurn) {
+                speakOnGlasses(l, interaction, transcript, text, listen)
+                return 0
+            }
+            say("The glasses are on Meta's session path: the phone speaks the answer")
         }
         // The phone speaks it, but a phone without a text to speech engine cannot: fall back to the glasses'
         // own voice rather than losing the answer. A session turn cannot: there the glasses' own voice would
@@ -985,7 +991,11 @@ class Assistant(
             return 0
         }
         // A session turn ends on the VARM; there, and in Live AI, ev60 would end the whole session.
-        stream(l, interaction, transcript, text, packets, complete = !l.sessionTurn && !live, listen = listen)
+        // On a session turn, though, the VARM alone leaves the glasses in their answering state with the
+        // LED on, and they never offer a follow-up. So the ev60 goes out there too when the model has
+        // ended the conversation (listen false): that is what tells the glasses to stop. With followUp
+        // left true the session goes on as before.
+        stream(l, interaction, transcript, text, packets, complete = !live, listen = listen, session = l.sessionTurn)
         return packets.sumOf { it.durationUs } / 1000
     }
 
@@ -1038,6 +1048,7 @@ class Assistant(
      */
     private suspend fun stream(
         l: Link, interaction: String, transcript: String, text: String, packets: List<OpusPacket>, complete: Boolean, listen: Boolean,
+        session: Boolean = false,
     ) {
         val mux = l.mux
         val m0 = checkNotNull(l.m0)
@@ -1079,10 +1090,20 @@ class Assistant(
         mux.send(s0, ByteArray(0), messageType = MT_STREAM_END)
         if (!l.simplified) sendNetEvent(l, m0, answer)
         // Without it the glasses stay in their answering state with the mic on, and never offer a follow-up.
+        // On a session turn the VARM does not end the turn on its own: the glasses keep their LED on and
+        // wait for more. So there the ev60 goes out when the model has ended the conversation (listen false),
+        // and says so with followUp false; the session then closes as the wearer asked. A session turn that
+        // is still going on (listen true) keeps the VARM's own follow-up, exactly as before.
+        val done = interactionComplete(
+            interaction, text,
+            expectsAnswer = listen && ASKS.containsMatchIn(text),
+            followUp = listen && text.isNotEmpty(),
+            streamed = true,
+        )
         if (complete) {
-            val done = interactionComplete(
-                interaction, text, expectsAnswer = listen && ASKS.containsMatchIn(text), followUp = listen && text.isNotEmpty(), streamed = true,
-            )
+            sendNetEvent(l, m0, netEvent(EV_MWA_VOICE_INTERACTION_COMPLETE, done))
+        } else if (session && !listen) {
+            say("Ending the glasses' session: the model ended the conversation")
             sendNetEvent(l, m0, netEvent(EV_MWA_VOICE_INTERACTION_COMPLETE, done))
         }
 
