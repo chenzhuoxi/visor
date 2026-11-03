@@ -40,11 +40,18 @@ fun keepAssistantConfig(
     log: EventLog,
 ) {
     scope.launch {
+        // Whether the frames' assistant has been restarted since this link came up: once per connection is
+        // enough, and a restart on every settings change would cut the assistant for no reason.
+        var restartedThisLink = false
         combine(
             connection.state.map { it.link == LinkState.READY }.distinctUntilChanged(),
             store.config.map { Triple(it.enabled, it.glassesVoice, it.answerWaitSeconds.toLong()) }.distinctUntilChanged(),
         ) { ready, wanted -> wanted.takeIf { ready } }.collectLatest { wanted ->
-            val (enabled, own, wait) = wanted ?: return@collectLatest
+            if (wanted == null) {
+                restartedThisLink = false
+                return@collectLatest
+            }
+            val (enabled, own, wait) = wanted
             if (!(enabled || own)) return@collectLatest
             // Let the link settle; the configuration comes in a bug report, a minute over Bluetooth.
             delay(SETTLE_MS)
@@ -67,6 +74,10 @@ fun keepAssistantConfig(
                 // string value left Meta's session path on and the glasses never spoke the answer.
                 if (own && SESSION_PATH_FLAG in state.params && state.values[SESSION_PATH_FLAG].asBoolean()) put(SESSION_PATH_FLAG, false)
             }
+            // The classic path is what speaks Visor's text in every language. It is taken when the flag is
+            // off — but only once the frames' assistant has read that, and it reads the configuration when it
+            // starts, not before.
+            val classic = own && SESSION_PATH_FLAG in state.params && !state.values[SESSION_PATH_FLAG].asBoolean()
             if (own) {
                 log.add(
                     "Own voice: Meta's session path is " +
@@ -75,15 +86,21 @@ fun keepAssistantConfig(
                         else "off, so the glasses speak answers in every language",
                 )
             }
-            if (changes.isEmpty()) return@collectLatest
-            if (PROCESSING_TIMEOUT in changes) log.add("Assistant: letting the glasses wait $wait s for an answer, not ${state.values[PROCESSING_TIMEOUT]}")
-            if (SESSION_PATH_FLAG in changes) log.add("Own voice: turning Meta's session path off, so the glasses speak answers in every language")
-            config.apply(changes)
-            val written = withTimeoutOrNull(WRITE_MS) {
-                config.state.first { s -> s.busy.isEmpty() && changes.all { (key, value) -> s.values[key] == value } }
+            if (changes.isNotEmpty()) {
+                if (PROCESSING_TIMEOUT in changes) log.add("Assistant: letting the glasses wait $wait s for an answer, not ${state.values[PROCESSING_TIMEOUT]}")
+                if (SESSION_PATH_FLAG in changes) log.add("Own voice: turning Meta's session path off, so the glasses speak answers in every language")
+                config.apply(changes)
+                val written = withTimeoutOrNull(WRITE_MS) {
+                    config.state.first { s -> s.busy.isEmpty() && changes.all { (key, value) -> s.values[key] == value } }
+                }
+                if (written == null) return@collectLatest log.add("Assistant: the glasses did not take the change: ${config.state.value.note}")
             }
-            if (written == null) return@collectLatest log.add("Assistant: the glasses did not take the change: ${config.state.value.note}")
-            if (SESSION_PATH_FLAG !in changes) return@collectLatest
+            // The flag can read as off while the frames' assistant still runs the session path it read when it
+            // started: a turn still comes in as use case 7 and the glasses say nothing. Only a restart makes it
+            // read the configuration again. So restart once per connection whenever answers are to be in the
+            // glasses' own voice and the session path is already off, not just when the flag has just changed.
+            if (SESSION_PATH_FLAG !in changes && !(classic && !restartedThisLink)) return@collectLatest
+            restartedThisLink = true
             log.add(if (restartGlassesAssistant(settings)) "Own voice: restarting the glasses' assistant to apply it" else "Own voice: restart the glasses to apply it")
         }
     }

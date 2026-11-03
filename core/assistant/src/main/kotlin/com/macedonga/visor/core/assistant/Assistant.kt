@@ -1008,13 +1008,21 @@ class Assistant(
      * it. The milliseconds of audio sent, 0 in the glasses' voice.
      */
     private suspend fun deliver(l: Link, interaction: String, transcript: String, text: String, listen: Boolean = true, live: Boolean = false): Long {
-        // The phone speaks it, and on these frames it is the only path that makes a sound. Every turn is a
-        // session one ("5=7"), and there the glasses never speak text the phone sends — the frames' own
-        // voice is silent whatever is sent to it. Streaming the phone's own text to speech is what plays.
+        // The frames' own voice first. Only the classic path speaks it — the session path never does — and
+        // keepAssistantConfig gets the frames onto that path by restarting their assistant. The phone's own
+        // text to speech is the fallback: it makes a sound whatever the frames do with the text.
+        if (store.config.value.glassesVoice && store.config.value.speechLanguage.isEmpty()) {
+            try {
+                speakOnGlasses(l, interaction, transcript, text, listen)
+                return 0
+            } catch (error: Exception) {
+                say("The glasses did not say it (${error.message}); the phone will instead")
+            }
+        }
         val packets = try {
             voice.speak(text, spoken(l))
         } catch (error: Exception) {
-            // No engine on the phone will start. The frames' own voice says nothing here, but sending it
+            // No engine on the phone will start. The frames' own voice may say nothing here, but sending it
             // closes the turn so the LED goes off instead of the wearer being left waiting.
             say("The phone could not speak it (${error.message}); the glasses will close the turn without a word")
             speakOnGlasses(l, interaction, transcript, text, listen = listen)
