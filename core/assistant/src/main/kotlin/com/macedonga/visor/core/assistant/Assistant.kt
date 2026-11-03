@@ -1074,9 +1074,11 @@ class Assistant(
         val varm = varm(interaction, transcript, text, onGlasses = true, voiceId = voiceId)
         val answer = netEvent(EV_VOICE_ACTION_RESPONSE, varm)
         // The frames drop a net event they cannot take, and the log would otherwise show only that the
-        // answer went out. The size is what tells a dropped answer from a spoken one. Both voices are named
-        // so a silent answer can be told apart from one the frames merely did not like.
-        say("Voice: $text = ${varm.size} B (voice ${voiceId ?: "default"}, assistant ${glassesVoice() ?: "default"})")
+        // answer went out. The size is what tells a dropped answer from a spoken one. All three voices are named:
+        // the one asked for, the frames' own, and the one the VARM actually carries after splicing — a Chinese
+        // answer heard in an English voice means the frames overrode the VARM, and only the last of the three says so.
+        val sent = runCatching { Thrift.loads(varm)[13].asText() }.getOrNull()
+        say("Voice: $text = ${varm.size} B (voice ${voiceId ?: "default"}, assistant ${glassesVoice() ?: "default"}, in the VARM: ${sent ?: "unreadable"})")
         // An answer that asks something has the glasses listen for the reply, without the wake word. Any other answer
         // offers a follow-up, as the VARM's own shouldSmartFollowUp does.
         val complete = netEvent(

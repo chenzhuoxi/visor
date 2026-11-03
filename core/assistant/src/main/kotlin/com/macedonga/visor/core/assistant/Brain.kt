@@ -109,6 +109,7 @@ class Brain(
             turn.box.prompt +
             (if (image != null && turn.box.tools.isNotEmpty()) PHOTO_PROMPT else "") +
             (if (note.isNotBlank()) " $note" else "") +
+            CHINESE_ANSWER_PROMPT +
             if (c.instructions.isNotBlank()) " " + c.instructions else ""
         val recent = past.takeLast(MAX_EXCHANGES)
         val tokens = if (audience == Audience.PHONE) PHONE_TOKENS else GLASSES_TOKENS
@@ -419,6 +420,15 @@ class Brain(
         val NO_INPUT: JSONObject get() = JSONObject().put("type", "object").put("properties", JSONObject())
         const val END_PROMPT = " After each answer the glasses keep listening. When the wearer thanks you, says goodbye, " +
             "says they need nothing more or turns down what you offered, call end_conversation and answer in a few words."
+
+        /**
+         * The wearer asks in whatever language the frames recognised — their assistant voice also sets that — and
+         * wants the answer in Chinese. The frames' Chinese voice is named in the answer's VARM, so the text has to
+         * be Chinese for it to have anything to say: an English answer read by a Chinese voice is silence or noise.
+         * Ahead of the wearer's own instructions, which may override it.
+         */
+        const val CHINESE_ANSWER_PROMPT =
+            " Answer in Chinese whatever language the question came in: short spoken sentences, no markdown, no lists."
 
         fun schema(field: String, help: String): JSONObject = JSONObject().put("type", "object")
             .put("properties", JSONObject().put(field, JSONObject().put("type", "string").put("description", help)))
