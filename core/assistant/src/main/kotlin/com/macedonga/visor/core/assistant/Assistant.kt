@@ -1008,21 +1008,17 @@ class Assistant(
      * it. The milliseconds of audio sent, 0 in the glasses' voice.
      */
     private suspend fun deliver(l: Link, interaction: String, transcript: String, text: String, listen: Boolean = true, live: Boolean = false): Long {
-        // The frames' own voice first. Only the classic path speaks it — the session path never does — and
-        // keepAssistantConfig gets the frames onto that path by restarting their assistant. The phone's own
-        // text to speech is the fallback: it makes a sound whatever the frames do with the text.
-        if (store.config.value.glassesVoice && store.config.value.speechLanguage.isEmpty()) {
-            try {
-                speakOnGlasses(l, interaction, transcript, text, listen)
-                return 0
-            } catch (error: Exception) {
-                say("The glasses did not say it (${error.message}); the phone will instead")
-            }
-        }
+        // Who speaks the answer, and in which order. See the note at the phone's speak below: the frames
+        // cannot say Chinese on this firmware, so the phone goes first and the frames are the fallback.
+        // The phone speaks first. The frames cannot say Chinese at all, and the log settled why: with a Chinese
+        // assistant_voice_id every turn is a session one (`5=7`) and there they never speak text the phone sends,
+        // while with any other voice the turn is ordinary (`5=0`) and they speak it — in that voice, which renders
+        // the prosody of a Chinese answer and none of its words. The VARM's own voice id is ignored either way.
+        // The phone's engine has none of those limits, and its audio still reaches the frames over Bluetooth.
         val packets = try {
             voice.speak(text, spoken(l))
         } catch (error: Exception) {
-            // No engine on the phone will start. The frames' own voice may say nothing here, but sending it
+            // No engine on the phone will start. The frames' own voice will not say the words, but sending it
             // closes the turn so the LED goes off instead of the wearer being left waiting.
             say("The phone could not speak it (${error.message}); the glasses will close the turn without a word")
             speakOnGlasses(l, interaction, transcript, text, listen = listen)

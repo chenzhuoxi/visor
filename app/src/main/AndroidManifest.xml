@@ -44,6 +44,11 @@
         <intent>
             <action android:name="android.intent.action.TTS_SERVICE" />
         </intent>
+        <!-- The speech recognizers, same rule: without this the app is told the phone has none, and the
+             wearer can only speak the language the frames' own assistant runs in. -->
+        <intent>
+            <action android:name="android.speech.RecognitionService" />
+        </intent>
         <intent>
             <action android:name="android.media.browse.MediaBrowserService" />
         </intent>
