@@ -1421,11 +1421,11 @@ class Assistant(
     private suspend fun deliver(l: Link, interaction: String, transcript: String, text: String, listen: Boolean = true, live: Boolean = false): Long {
         // A typed or handwritten question has no stream id for the phone's voice. The glasses' own voice speaks only their language.
         val written = l.typedOf.containsKey(interaction) || interaction in l.written
-        if (text.isEmpty() && interaction in l.partnerTurns || !l.sessionTurn && (written || store.config.value.glassesVoice && !l.foreign && store.config.value.speechLanguage.isEmpty())) {
+        if (text.isEmpty() && interaction in l.partnerTurns || !l.sessionTurn && (written || store.config.value.tts == TtsPath.GLASSES && store.config.value.glassesVoice && !l.foreign && store.config.value.speechLanguage.isEmpty())) {
             speakOnGlasses(l, interaction, transcript, text, listen)
             return 0
         }
-        val packets = voice.speak(text, spoken(l))
+        val packets = synthesise(l, text)
         // A session turn ends on the VARM; there, and in Live AI, ev60 would end the whole session. A typed one ends on its card.
         val card = if (written && display() && text.isNotEmpty()) answerCard(text) else null
         stream(
@@ -1433,6 +1433,25 @@ class Assistant(
             complete = written || !l.sessionTurn && !live && interaction !in l.partnerTurns, listen = listen, card = card,
         )
         return packets.sumOf { it.durationUs } / 1000
+    }
+
+    /**
+     * The answer as audio, in the order the wearer chose. A cloud service is asked first when it is the
+     * choice: it sounds better than any phone engine, and the answer needed the network anyway. A failure
+     * falls through to the phone's engine rather than leaving silence and a turn that never ends.
+     */
+    private suspend fun synthesise(l: Link, text: String): List<OpusPacket> {
+        val c = store.config.value
+        if (c.tts == TtsPath.CLOUD) {
+            try {
+                val audio = cloudSpeech(c, text)
+                say("Speech: ${text.length} characters said by ${c.ttsModel.ifEmpty { "the speech service" }}")
+                return voice.encode(audio.samples, audio.rate)
+            } catch (error: Exception) {
+                say("The speech service did not answer (${error.message}); the phone will speak instead")
+            }
+        }
+        return voice.speak(text, spoken(l))
     }
 
     /** ev71, ev52 and ev342, with explicit NetEvent types for partner turns and tagged type 0 otherwise. */

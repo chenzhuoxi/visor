@@ -1012,4 +1012,17 @@
     <string name="onboard_band_failed">手环未配对</string>
     <string name="ai_speech_language">你所说的语言</string>
     <string name="ai_speech_language_glasses">眼镜的语言</string>
+    <string name="ai_tts_cloud">云服务</string>
+    <string name="ai_tts_url">语音服务地址</string>
+    <string name="ai_tts_key">语音服务密钥</string>
+    <string name="ai_tts_key_set">已填密钥</string>
+    <string name="ai_tts_key_sub">只保存在这台手机上。任何能响应 GET /models 的服务都可以用。</string>
+    <string name="ai_tts_model">语音模型</string>
+    <string name="ai_tts_model_auto">用服务的默认值</string>
+    <string name="ai_tts_model_sub">留空则由服务决定。上面的地址会用来扫描可用模型列表。</string>
+    <string name="ai_tts_voice">音色</string>
+    <string name="ai_tts_voice_sub">各家命名不同：OpenAI 是 alloy、echo 等；MiMo 是 mimo_default 等。留空则用服务默认。</string>
+    <string name="ai_tts_try">试听</string>
+    <string name="ai_tts_try_sub">在这台手机上朗读一句固定的话，只测语音本身：不调用模型，也不需要连眼镜。</string>
+    <string name="ai_tts_trying">正在朗读…</string>
 </resources>

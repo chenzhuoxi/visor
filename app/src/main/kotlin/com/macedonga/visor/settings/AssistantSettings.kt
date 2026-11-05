@@ -41,18 +41,22 @@ import com.macedonga.visor.MemoriesKey
 import com.macedonga.visor.R
 import com.macedonga.visor.features.featureSection
 import com.macedonga.visor.core.assistant.Assistant
+import com.macedonga.visor.core.assistant.AssistantConfig
 import com.macedonga.visor.core.assistant.AssistantConfigStore
 import com.macedonga.visor.core.assistant.AssistantPhase
 import com.macedonga.visor.core.assistant.ModelInfo
 import com.macedonga.visor.core.assistant.ModelsError
 import com.macedonga.visor.core.assistant.Provider
 import com.macedonga.visor.core.assistant.SPEECH_LANGUAGES
+import com.macedonga.visor.core.assistant.TtsPath
 import com.macedonga.visor.core.assistant.listModels
+import com.macedonga.visor.core.assistant.previewSpeech
 import com.macedonga.visor.core.assistant.mcp.McpHub
 import com.macedonga.visor.core.design.Visor
 import com.macedonga.visor.core.settings.GlassesSettings
 import com.macedonga.visor.ui.VisorIcons
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -64,7 +68,18 @@ class AssistantViewModel @Inject constructor(
     val toggles: VisorToggles,
     val settings: GlassesSettings,
     val hub: McpHub,
-) : ViewModel()
+    @ApplicationContext private val context: Context,
+) : ViewModel() {
+
+    /**
+     * Say one fixed line with the voice that was chosen, on this phone, and say what happened if it
+     * did not. No model is asked and no glasses are needed — see [previewSpeech] for why.
+     */
+    suspend fun previewTts(): String = runCatching {
+        previewSpeech(store.config.value, context)
+        ""
+    }.getOrElse { it.message ?: it.javaClass.simpleName }
+}
 
 /** What came of asking the provider for its models, which is also the test of the key. */
 private sealed interface KeyCheck {
@@ -98,6 +113,22 @@ fun AssistantSettingsScreen(open: (NavKey) -> Unit, model: AssistantViewModel = 
         check = KeyCheck.Checking
         delay(350)
         check = runCatching { KeyCheck.Works(listModels(config)) }.getOrElse {
+            if ((it as? ModelsError)?.refused == true) KeyCheck.Refused(it.message.orEmpty()) else KeyCheck.Failed(it.message ?: it.javaClass.simpleName)
+        }
+    }
+
+    // The speech service's own key check, the same shape as the model's: listing its models both
+    // proves the key and fills the list to choose from.
+    var ttsCheck by remember { mutableStateOf<KeyCheck>(KeyCheck.None) }
+    LaunchedEffect(config.tts, config.ttsBaseUrl, config.ttsApiKey) {
+        if (config.tts != TtsPath.CLOUD || config.ttsApiKey.isBlank()) {
+            ttsCheck = KeyCheck.None
+            return@LaunchedEffect
+        }
+        ttsCheck = KeyCheck.Checking
+        delay(350)
+        val probe = config.copy(provider = Provider.OPENAI_COMPATIBLE, baseUrl = config.ttsBaseUrl, apiKey = config.ttsApiKey)
+        ttsCheck = runCatching { KeyCheck.Works(listModels(probe)) }.getOrElse {
             if ((it as? ModelsError)?.refused == true) KeyCheck.Refused(it.message.orEmpty()) else KeyCheck.Failed(it.message ?: it.javaClass.simpleName)
         }
     }
@@ -193,9 +224,13 @@ fun AssistantSettingsScreen(open: (NavKey) -> Unit, model: AssistantViewModel = 
                             sub = stringResource(R.string.language_partner_voice), dim = true,
                         ) else PillsRow(
                             stringResource(R.string.ai_voice),
-                            listOf(true to stringResource(R.string.ai_voice_glasses), false to stringResource(R.string.ai_voice_phone)),
-                            config.glassesVoice,
-                            onPick = { on -> model.store.update { it.copy(glassesVoice = on) } },
+                            listOf(
+                                TtsPath.CLOUD to stringResource(R.string.ai_tts_cloud),
+                                TtsPath.PHONE to stringResource(R.string.ai_voice_phone),
+                                TtsPath.GLASSES to stringResource(R.string.ai_voice_glasses),
+                            ),
+                            config.tts,
+                            onPick = { path -> model.store.update { it.copy(tts = path) } },
                         )
                     },
                     if (!partner) row {
@@ -203,6 +238,49 @@ fun AssistantSettingsScreen(open: (NavKey) -> Unit, model: AssistantViewModel = 
                             stringResource(R.string.ai_speech_language),
                             config.speechLanguage.takeIf { it.isNotEmpty() }?.let(::languageName) ?: stringResource(R.string.ai_speech_language_glasses),
                             onClick = { sheet = "speech" },
+                        )
+                    } else null,
+                    if (config.tts == TtsPath.CLOUD) row {
+                        ValueRow(stringResource(R.string.ai_tts_url), config.ttsBaseUrl, onClick = { sheet = "tts_url" })
+                    } else null,
+                    if (config.tts == TtsPath.CLOUD) row {
+                        ValueRow(
+                            stringResource(R.string.ai_tts_key),
+                            if (config.ttsApiKey.isEmpty()) stringResource(R.string.ai_key_needed)
+                            else when (val c = ttsCheck) {
+                                KeyCheck.None -> stringResource(R.string.ai_tts_key_set)
+                                KeyCheck.Checking -> stringResource(R.string.ai_key_checking)
+                                is KeyCheck.Works -> stringResource(R.string.ai_key_works, c.models.size)
+                                is KeyCheck.Refused -> stringResource(R.string.ai_key_refused, c.words)
+                                is KeyCheck.Failed -> stringResource(R.string.ai_key_failed, c.words)
+                            },
+                            onClick = { sheet = "tts_key" },
+                        )
+                    } else null,
+                    if (config.tts == TtsPath.CLOUD) row {
+                        ValueRow(
+                            stringResource(R.string.ai_tts_model),
+                            config.ttsModel.ifEmpty { stringResource(R.string.ai_tts_model_auto) },
+                            onClick = { sheet = "tts_model" },
+                        )
+                    } else null,
+                    if (config.tts == TtsPath.CLOUD) row {
+                        ValueRow(stringResource(R.string.ai_tts_voice), config.ttsVoice, onClick = { sheet = "tts_voice" })
+                    } else null,
+                    if (!partner) row {
+                        ValueRow(
+                            stringResource(R.string.ai_tts_try),
+                            if (trying) stringResource(R.string.ai_tts_trying) else trial.takeIf { it.isNotEmpty() },
+                            onClick = {
+                                trial = ""
+                                trying = true
+                                scope.launch {
+                                    trial = model.previewTts()
+                                    trying = false
+                                }
+                            },
+                            sub = stringResource(R.string.ai_tts_try_sub),
+                            problem = trial.takeIf { it.isNotEmpty() && !trying },
                         )
                     } else null,
                     { VisorToggleRow(model.toggles.byId("vision")!!, sub = stringResource(R.string.ai_vision_sub)) },
@@ -264,6 +342,23 @@ fun AssistantSettingsScreen(open: (NavKey) -> Unit, model: AssistantViewModel = 
             stringResource(R.string.ai_key), config.apiKey, onSave = { key -> model.store.update { it.copy(apiKey = key.trim()) } },
             onDismiss = { sheet = null }, sub = stringResource(R.string.ai_key_sub), secret = true, keyboard = KeyboardType.Password,
             extra = { set -> ActionPill(stringResource(R.string.ai_paste), { paste(context)?.let { set(it.trim()) } }, quiet = true) },
+        )
+        "tts_url" -> TextSheet(
+            stringResource(R.string.ai_tts_url), config.ttsBaseUrl, onSave = { url -> model.store.update { it.copy(ttsBaseUrl = url.trim()) } },
+            onDismiss = { sheet = null }, keyboard = KeyboardType.Uri, valid = { it.startsWith("http") },
+        )
+        "tts_key" -> TextSheet(
+            stringResource(R.string.ai_tts_key), config.ttsApiKey, onSave = { key -> model.store.update { it.copy(ttsApiKey = key.trim()) } },
+            onDismiss = { sheet = null }, sub = stringResource(R.string.ai_tts_key_sub), secret = true, keyboard = KeyboardType.Password,
+            extra = { set -> ActionPill(stringResource(R.string.ai_paste), { paste(context)?.let { set(it.trim()) } }, quiet = true) },
+        )
+        "tts_model" -> TextSheet(
+            stringResource(R.string.ai_tts_model), config.ttsModel, onSave = { name -> model.store.update { it.copy(ttsModel = name.trim()) } },
+            onDismiss = { sheet = null }, sub = stringResource(R.string.ai_tts_model_sub),
+        )
+        "tts_voice" -> TextSheet(
+            stringResource(R.string.ai_tts_voice), config.ttsVoice, onSave = { name -> model.store.update { it.copy(ttsVoice = name.trim()) } },
+            onDismiss = { sheet = null }, sub = stringResource(R.string.ai_tts_voice_sub),
         )
         "url" -> TextSheet(
             stringResource(R.string.ai_base_url), config.baseUrl, onSave = { url -> model.store.update { it.copy(baseUrl = url.trim()) } },

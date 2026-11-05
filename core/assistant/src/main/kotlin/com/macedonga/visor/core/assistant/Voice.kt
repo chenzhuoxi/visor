@@ -1,6 +1,9 @@
 package com.macedonga.visor.core.assistant
 
 import android.content.Context
+import android.media.AudioAttributes
+import android.media.AudioFormat
+import android.media.AudioTrack
 import android.media.MediaCodec
 import android.media.MediaFormat
 import android.os.Bundle
@@ -12,8 +15,10 @@ import java.nio.ByteOrder
 import java.util.Locale
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
+import kotlin.coroutines.resume
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
@@ -46,6 +51,70 @@ class Voice(private val context: Context) {
         synthesize(text, locale, wav)
         val pcm = withContext(Dispatchers.Default) { readWav(wav) }
         withContext(Dispatchers.Default) { encodeOpus(resample(pcm.samples, pcm.rate, 48_000)) }
+    }
+
+    /**
+     * Already-synthesised audio to the same packets the phone's own engine produces. Nothing about
+     * the way to the glasses changes with who did the synthesising, so a cloud voice and the phone's
+     * are one branch apart in the caller rather than two delivery paths.
+     */
+    suspend fun encode(samples: ShortArray, rate: Int): List<OpusPacket> =
+        withContext(Dispatchers.Default) { encodeOpus(resample(samples, rate, 48_000)) }
+
+    /**
+     * Say already-synthesised audio out loud on this phone's own speaker and wait for it to finish.
+     * Nothing reaches the glasses: a voice preview tests the voice and nothing else, and one that
+     * also needed a link would be testing two things at once.
+     */
+    suspend fun play(samples: ShortArray, rate: Int) {
+        val track = AudioTrack.Builder()
+            .setAudioAttributes(
+                AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                    .build(),
+            )
+            .setAudioFormat(
+                AudioFormat.Builder()
+                    .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
+                    .setSampleRate(rate.coerceIn(8_000, 48_000))
+                    .setChannelMask(AudioFormat.CHANNEL_OUT_MONO)
+                    .build(),
+            )
+            .setTransferMode(AudioTrack.MODE_STATIC)
+            .setBufferSizeInBytes(samples.size * 2)
+            .build()
+        try {
+            val done = CompletableDeferred<Unit>()
+            track.setPlaybackPositionUpdateListener(
+                object : AudioTrack.OnPlaybackPositionUpdateListener {
+                    override fun onMarkerReached(t: AudioTrack) {
+                        done.complete(Unit)
+                    }
+
+                    override fun onPeriodicNotification(t: AudioTrack) = Unit
+                },
+            )
+            track.write(samples, 0, samples.size)
+            // The marker counts frames; the wait below is the fallback if it never fires.
+            track.setNotificationMarkerPosition(samples.size)
+            track.play()
+            withTimeout(samples.size.toLong() * 1000 / rate.coerceAtLeast(1) + 3_000) { done.await() }
+        } finally {
+            runCatching { track.release() }
+        }
+    }
+
+    /** Say [text] out loud on this phone's own speaker, with the engine the wearer set, and wait for it. */
+    suspend fun speakAloud(text: String, locale: Locale) = lock.withLock {
+        val engine = ready()
+        if (engine.isLanguageAvailable(locale) >= TextToSpeech.LANG_AVAILABLE) engine.language = locale
+        val id = UUID.randomUUID().toString()
+        val done = CompletableDeferred<Boolean>().also { pending[id] = it }
+        check(engine.speak(text, TextToSpeech.QUEUE_FLUSH, null, id) == TextToSpeech.SUCCESS) { "the phone's text to speech refused the sentence" }
+        val ok = withTimeout(20_000) { done.await() }
+        pending.remove(id)
+        check(ok) { "the phone's text to speech failed" }
     }
 
     private suspend fun synthesize(text: String, locale: Locale, out: File) {
