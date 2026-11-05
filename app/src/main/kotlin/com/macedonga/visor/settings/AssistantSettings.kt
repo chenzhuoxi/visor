@@ -352,9 +352,13 @@ fun AssistantSettingsScreen(open: (NavKey) -> Unit, model: AssistantViewModel = 
             onDismiss = { sheet = null }, sub = stringResource(R.string.ai_tts_key_sub), secret = true, keyboard = KeyboardType.Password,
             extra = { set -> ActionPill(stringResource(R.string.ai_paste), { paste(context)?.let { set(it.trim()) } }, quiet = true) },
         )
-        "tts_model" -> TextSheet(
-            stringResource(R.string.ai_tts_model), config.ttsModel, onSave = { name -> model.store.update { it.copy(ttsModel = name.trim()) } },
-            onDismiss = { sheet = null }, sub = stringResource(R.string.ai_tts_model_sub),
+        "tts_model" -> ModelSheet(
+            title = stringResource(R.string.ai_tts_model),
+            check = ttsCheck,
+            current = config.ttsModel,
+            emptyLabel = stringResource(R.string.ai_tts_model_auto),
+            onPick = { id -> model.store.update { it.copy(ttsModel = id) } },
+            onDismiss = { sheet = null },
         )
         "tts_voice" -> TextSheet(
             stringResource(R.string.ai_tts_voice), config.ttsVoice, onSave = { name -> model.store.update { it.copy(ttsVoice = name.trim()) } },
